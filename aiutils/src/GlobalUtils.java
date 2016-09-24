@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aiutils;
+package schedulling;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.LinkedList;
 /**
  * Not finished yet
  * Not thread safe yet
@@ -15,6 +16,74 @@ public final class GlobalUtils {
         private static ConcurrentLinkedQueue<StudyClass> sClassQueue;
         //private static ConcurrentLinkedQueue<Boolean> sClassScheduledStatus;
         private static ConcurrentLinkedQueue<StudyRoom> sRoomList;
+        private static LinkedList roomStudy = new LinkedList();
+        private static LinkedList scheduleStudy = new LinkedList();
+        
+        /**
+         * Digunakan untuk mengeset atau menambahkan ruangan ayng available
+         * @param room 
+         */
+        public void setRoomStudy(Object room) {
+            roomStudy.add(room);
+        }
+        
+        /**
+         * Digunakan untuk mendapatkan roomStudy dengan return LinkedList
+         * @return roomStudy
+         */
+        public LinkedList getRoomStudy() {
+            return roomStudy;
+        }
+        
+        /**
+         * digunakan untuk mendapatkan roomStudy pada indeks ke index
+         * @param index
+         * @return 
+         */
+        public Object getRoomStudyAtIndex(int index) {
+            return roomStudy.get(index);
+        }
+        
+        /**
+         * Digunakan untuk mencetak isi dari roomStudy
+         */
+        public void printRoomStudy() {
+            System.out.println("Isi roomStudy = " + roomStudy);
+            //System.out.println("iterator = " + roomStudy.get(2));
+        }
+        
+        /**
+         * digunakan untuk mengeset atau menambahkan jadwal
+         * @param sched 
+         */
+        public void setScheduleStudy(Object sched) {
+            scheduleStudy.add(sched);
+        }
+        
+        /**
+         * Digunakan untuk mendapatkan jadwal dengan tipe LinkedList
+         * @return scheduleStudy
+         */
+        public LinkedList getScheduleStudy() {
+            return scheduleStudy;
+        }
+        
+        /**
+         * digunakan untuk mendapatkan jadwal pada indeks ke index
+         * @param index
+         * @return objek schele indeks ke index
+         */
+        public Object getScheduleStudyAtIndex(int index) {
+            return scheduleStudy.get(index);
+        }
+        
+        /**
+         * digunakan untuk mencetak isi dari schedule
+         */
+        public void printScheduleStudy() {
+            System.out.println("Isi scheduleStudy = " + scheduleStudy);
+            //System.out.println("iterator = " + roomStudy.get(2));
+        }
         
         /**
          * Faktorial biasa. nothing fancy (ga nemu metod bawaan yang handle faktorial huwaaa)
