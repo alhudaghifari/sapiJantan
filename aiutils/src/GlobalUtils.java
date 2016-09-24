@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package schedulling;
+package aiutils;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.LinkedList;
 /**
@@ -12,17 +12,19 @@ import java.util.LinkedList;
  * @author HP
  */
 public final class GlobalUtils {
-        private static int sClassInternalId;
+        //private static ConcurrentLinkedQueue<Integer> sClassInternalId;
         private static ConcurrentLinkedQueue<StudyClass> sClassQueue;
         //private static ConcurrentLinkedQueue<Boolean> sClassScheduledStatus;
         private static ConcurrentLinkedQueue<StudyRoom> sRoomList;
+        
+        /*
         private static LinkedList roomStudy = new LinkedList();
         private static LinkedList scheduleStudy = new LinkedList();
         
         /**
          * Digunakan untuk mengeset atau menambahkan ruangan ayng available
          * @param room 
-         */
+         
         public void setRoomStudy(Object room) {
             roomStudy.add(room);
         }
@@ -30,7 +32,7 @@ public final class GlobalUtils {
         /**
          * Digunakan untuk mendapatkan roomStudy dengan return LinkedList
          * @return roomStudy
-         */
+         
         public LinkedList getRoomStudy() {
             return roomStudy;
         }
@@ -39,14 +41,14 @@ public final class GlobalUtils {
          * digunakan untuk mendapatkan roomStudy pada indeks ke index
          * @param index
          * @return 
-         */
+         
         public Object getRoomStudyAtIndex(int index) {
             return roomStudy.get(index);
         }
         
         /**
          * Digunakan untuk mencetak isi dari roomStudy
-         */
+         
         public void printRoomStudy() {
             System.out.println("Isi roomStudy = " + roomStudy);
             //System.out.println("iterator = " + roomStudy.get(2));
@@ -55,7 +57,7 @@ public final class GlobalUtils {
         /**
          * digunakan untuk mengeset atau menambahkan jadwal
          * @param sched 
-         */
+         
         public void setScheduleStudy(Object sched) {
             scheduleStudy.add(sched);
         }
@@ -63,7 +65,7 @@ public final class GlobalUtils {
         /**
          * Digunakan untuk mendapatkan jadwal dengan tipe LinkedList
          * @return scheduleStudy
-         */
+         
         public LinkedList getScheduleStudy() {
             return scheduleStudy;
         }
@@ -72,18 +74,19 @@ public final class GlobalUtils {
          * digunakan untuk mendapatkan jadwal pada indeks ke index
          * @param index
          * @return objek schele indeks ke index
-         */
+         
         public Object getScheduleStudyAtIndex(int index) {
             return scheduleStudy.get(index);
         }
         
         /**
          * digunakan untuk mencetak isi dari schedule
-         */
+         
         public void printScheduleStudy() {
             System.out.println("Isi scheduleStudy = " + scheduleStudy);
             //System.out.println("iterator = " + roomStudy.get(2));
         }
+        */
         
         /**
          * Faktorial biasa. nothing fancy (ga nemu metod bawaan yang handle faktorial huwaaa)
@@ -110,22 +113,38 @@ public final class GlobalUtils {
                 return (Factorial(base))/(Factorial(pair)*Factorial(base-pair));
         }
         
-        public static void initStudyClassQueue(StudyClass[] q){
+        /**
+         * 
+         */
+        public static void initStudyClassQueue(){
             
         }
         
+        /**
+         * 
+         */
         public static void initStudyRoomList(){
             
         }
         
+        /**
+         * 
+         * @param classNum
+         * @param className
+         * @return 
+         */
         public static int getClassInternalId(short classNum, String className){
             //dummy
             return 0;
         }
         
+        /**
+         * 
+         * @return 
+         */
         public static StudyClass[] getStudyClassQueueCopy(){
-            //dummy
-            return new StudyClass[1];
+            StudyClass[] dupli = (StudyClass[]) sClassQueue.toArray();
+            return dupli;
         }
         
         /*public static boolean[] getStudyClassScheduledStatus(){
@@ -133,9 +152,29 @@ public final class GlobalUtils {
             return new boolean[1];
         }*/
         
+        /**
+         * 
+         * @return 
+         */
         public static StudyRoom[] getStudyRoomListCopy(){
-            //dummy
-            return new StudyRoom[1];
+            StudyRoom[] dupli = (StudyRoom[]) sRoomList.toArray();
+            return dupli;
+        }
+        
+        /**
+         * Hitung banyaknya kelas yang ada di dalam antrian kelas yang akan dijadwalkan berdasarkan input user.
+         * @return banyaknya kelas dalam integer
+         */
+        public static int CountStudyClass(){
+            return sClassQueue.size();
+        }
+        
+        /**
+         * Hitung banyaknya ruangan kelas yang tersedia berdasarkan input user.
+         * @return banyaknya ruangan kelas dalam integer
+         */
+        public static int CountStudyRoom(){
+            return sRoomList.size();
         }
         
         /*
