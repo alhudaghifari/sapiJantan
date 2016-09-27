@@ -7,6 +7,7 @@ package schedulling;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  * Kelas GlobalUtils berisi member-member yang dapat diakses seluruh modul tanpa
@@ -28,6 +29,20 @@ public final class GlobalUtils {
         private static LinkedList<StudyRoom> sRoomList = new LinkedList<>();
         
         /**
+         * this main function is for testing the parser.
+         * you can make it become a commentar, ayee.
+         * SAPI JANTAN
+         * @param args 
+         */
+        public static void main(String[] args) {
+            fileReader filee = new fileReader();
+            System.out.println("Cobain Ruangan terakhir = "
+                    + GlobalUtils.sRoomList.getLast().getRoomId());
+            System.out.println("Cobain ruangan di jadwal terakhir = "
+            +  GlobalUtils.sClassQueue.getLast().getClassName());
+        }
+        
+        /**
          * Kelas FileReader yang membaca file untuk struktur data StudyClass dan StudyRoom. 
          * Karena kelas ini yang membaca file dan memasukkan data ke kontainer sClassQueue dan sRoomList,
          * maka validitas data StudyClass dan StudyRoom (misalnya: id internal kelas yang harus unik) dijamin
@@ -43,6 +58,10 @@ public final class GlobalUtils {
                 this.path = path;
             }
             
+            /**
+             * konstruktor dengan path nya setting sendiri aye
+             * @param path 
+             */
             public fileReader(String path){
                 this.path = path;
                 read();
@@ -69,7 +88,11 @@ public final class GlobalUtils {
                 String awal = "";
                 String akhir = "";
                 String hari = "";
+                String kodeMatkul = "";
+                String durasi = "";
+                
                 StudyRoom roomStudy;
+                StudyClass classStudy;
                 MyTime startTime;
                 MyTime endTime;
                 short myHour;
@@ -84,6 +107,7 @@ public final class GlobalUtils {
                 
                 try{
                     Scanner inFile = new Scanner(new File(path)).useDelimiter("[\\r\\n]+");
+                    int jj=0;
                     while(inFile.hasNext()){
                         temp = inFile.next();
                         switch (temp) {
@@ -116,12 +140,12 @@ public final class GlobalUtils {
                                 }
                             }
                             /*** Start Time ***/
-                            String [] jam = awal.split(".");
+                            String [] jam = awal.split("\\.");
                             myHour = Short.valueOf(jam[0]);
                             myMinute = Short.valueOf(jam[1]);
                             startTime = new MyTime(myHour, myMinute);
                             /*** End Time ***/
-                            String [] jam2 = akhir.split(".");
+                            String [] jam2 = akhir.split("\\.");
                             myHour = Short.valueOf(jam2[0]);
                             myMinute = Short.valueOf(jam2[1]);
                             endTime = new MyTime(myHour, myMinute);
@@ -147,20 +171,87 @@ public final class GlobalUtils {
                                         break;
                                 }
                             }
-                            timeCons = new TimeConstraint(startTime, endTime, senin, selasa, rabu, kamis, jumat);
+                            timeCons = new TimeConstraint(startTime, endTime,
+                                    senin, selasa, rabu, kamis, jumat);
                             roomStudy = new StudyRoom(kelas, timeCons);
-                            GlobalUtils.sRoomList.add(roomStudy); //walah tempnya bukan tipe StudyRoom //global.setRoomStudy(temp);
+                            GlobalUtils.sRoomList.add(roomStudy); 
                         }else if (schedule && !temp.equals("Jadwal")) {
                             //**GlobalUtils.sClassQueue.add(temp);
+                            String [] kata = temp.split(";");
+                            for (int i=0;i<kata.length;i++){
+                                switch (i) {
+                                    case 0:
+                                        kodeMatkul = kata[i];
+                                        break;
+                                    case 1:
+                                        kelas = kata[i];
+                                        break;
+                                    case 2:
+                                        awal = kata[i];
+                                        break;
+                                    case 3:
+                                        akhir = kata[i];
+                                        break;
+                                    case 4:
+                                        durasi = kata[i];
+                                        break;
+                                    case 5:
+                                        hari = kata[i];
+                                        break;
+                                }
+                            }
+                            String [] kata2 = kelas.split(",");
+                            String [] roomCons = new String[10];
+                            for(int i=0; i<kata2.length;i++) {
+                                roomCons[i] = kata2[i];
+                            }
+                            /*** Start Time ***/
+                            String [] jam = awal.split("\\.");
+                            myHour = Short.valueOf(jam[0]);
+                            myMinute = Short.valueOf(jam[1]);
+                            startTime = new MyTime(myHour, myMinute);
+                            /*** End Time ***/
+                            String [] jam2 = akhir.split("\\.");
+                            myHour = Short.valueOf(jam2[0]);
+                            myMinute = Short.valueOf(jam2[1]);
+                            endTime = new MyTime(myHour, myMinute);
                             
-                            // belum di edit untuk Jadwalnya
-                            // karena StudyClass nya aku rasa masih salah.. hmm
+                            /*** boolean hari ***/
+                            String [] hariArray = hari.split(",");
+                            for (int i=0;i<hariArray.length;i++){
+                                switch (hariArray[i]) {
+                                    case "1":
+                                        senin = true;
+                                        break;
+                                    case "2":
+                                        selasa = true;
+                                        break;
+                                    case "3":
+                                        rabu = true;
+                                        break;
+                                    case "4":
+                                        kamis = true;
+                                        break;
+                                    case "5":
+                                        jumat = true;
+                                        break;
+                                }
+                            }
+                            timeCons = new TimeConstraint(startTime, endTime,
+                                    senin, selasa, rabu, kamis, jumat);
+                            
+                            classStudy = new StudyClass(jj, 1, kodeMatkul,
+                                    Short.valueOf(durasi), roomCons, timeCons);
+                            GlobalUtils.sClassQueue.add(classStudy);
                         }
-
+                        jj++;
                     }
 
                 }catch(Exception e){
                     System.out.println("WOWOW there is a mistake when reading the file..");
+                    JOptionPane.showMessageDialog(null, 
+                            "WOWOW there is a mistake when reading the file..",
+                            "Be Careful",JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
