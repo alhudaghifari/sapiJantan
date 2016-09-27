@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aiutils;
+package schedulling;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -57,12 +57,31 @@ public final class GlobalUtils {
                 read();
             }
             
+            /**
+             * This is parser
+             */
             private synchronized void read(){
-                //GlobalUtils global = new GlobalUtils();
+                
                 boolean room = false;
                 boolean schedule = false;
                 String temp;
-
+                String kelas = "";
+                String awal = "";
+                String akhir = "";
+                String hari = "";
+                StudyRoom roomStudy;
+                MyTime startTime;
+                MyTime endTime;
+                short myHour;
+                short myMinute;
+                TimeConstraint timeCons;
+                boolean senin = false;
+                boolean selasa = false;
+                boolean rabu = false;
+                boolean kamis = false;
+                boolean jumat = false;
+                
+                
                 try{
                     Scanner inFile = new Scanner(new File(path)).useDelimiter("[\\r\\n]+");
                     while(inFile.hasNext()){
@@ -77,11 +96,65 @@ public final class GlobalUtils {
                                 schedule = true;
                                 break;
                         }
-
+                            
                         if(room && !temp.equals("Ruangan")) {
-                            GlobalUtils.sRoomList.add(temp); //walah tempnya bukan tipe StudyRoom //global.setRoomStudy(temp);
+                            String [] kata = temp.split(";");
+                            for (int i=0;i<kata.length;i++){
+                                switch (i) {
+                                    case 0:
+                                        kelas = kata[i];
+                                        break;
+                                    case 1:
+                                        awal = kata[i];
+                                        break;
+                                    case 2:
+                                        akhir = kata[i];
+                                        break;
+                                    case 3:
+                                        hari = kata[i];
+                                        break;
+                                }
+                            }
+                            /*** Start Time ***/
+                            String [] jam = awal.split(".");
+                            myHour = Short.valueOf(jam[0]);
+                            myMinute = Short.valueOf(jam[1]);
+                            startTime = new MyTime(myHour, myMinute);
+                            /*** End Time ***/
+                            String [] jam2 = akhir.split(".");
+                            myHour = Short.valueOf(jam2[0]);
+                            myMinute = Short.valueOf(jam2[1]);
+                            endTime = new MyTime(myHour, myMinute);
+                            
+                            /*** boolean hari ***/
+                            String [] hariArray = hari.split(",");
+                            for (int i=0;i<hariArray.length;i++){
+                                switch (hariArray[i]) {
+                                    case "1":
+                                        senin = true;
+                                        break;
+                                    case "2":
+                                        selasa = true;
+                                        break;
+                                    case "3":
+                                        rabu = true;
+                                        break;
+                                    case "4":
+                                        kamis = true;
+                                        break;
+                                    case "5":
+                                        jumat = true;
+                                        break;
+                                }
+                            }
+                            timeCons = new TimeConstraint(startTime, endTime, senin, selasa, rabu, kamis, jumat);
+                            roomStudy = new StudyRoom(kelas, timeCons);
+                            GlobalUtils.sRoomList.add(roomStudy); //walah tempnya bukan tipe StudyRoom //global.setRoomStudy(temp);
                         }else if (schedule && !temp.equals("Jadwal")) {
-                            GlobalUtils.sClassQueue.add(temp);
+                            //**GlobalUtils.sClassQueue.add(temp);
+                            
+                            // belum di edit untuk Jadwalnya
+                            // karena StudyClass nya aku rasa masih salah.. hmm
                         }
 
                     }
