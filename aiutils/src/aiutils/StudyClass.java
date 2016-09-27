@@ -24,7 +24,7 @@ public class StudyClass {
     private final int internalId;
     private final int classNum;
     private final String className;
-    private final short[] roomConstraint;
+    private final String [] roomConstraint;
     private final TimeConstraint tConstraint;
     private final short sks;
     
@@ -38,7 +38,7 @@ public class StudyClass {
      * @param timeConstraint konstrain waktu (boleh jam berapa sampe jam berapa kuliah ini? BTW masukkannya TimeConstraint ya, yang komponennya ada MyTime[] dan boolean[]) 
      */
     public StudyClass(int internID, int classNum, String name, short sks, 
-            short[] roomConstraint, TimeConstraint timeConstraint){
+            String [] roomConstraint, TimeConstraint timeConstraint){
         internalId = internID;
         this.classNum = classNum;
         className = name;
@@ -75,7 +75,7 @@ public class StudyClass {
      * Get id ruangan konstrain
      * @return duplikat list id ruangan konstrain. Lihat konstruktor
      */
-    public short[] getRoomConstraint(){
+    public String [] getRoomConstraint(){
         return roomConstraint.clone();
     }
     
