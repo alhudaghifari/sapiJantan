@@ -23,14 +23,14 @@
                           |     |
 * jelek ya kelinci nya. Peang pletat pletot gitu.
 */
-package aiutils;
+package schedulling;
 
 /**
  * Kelas untuk kelas tempat kuliah.
  * KELAS-CEPTION
  */
 public class StudyRoom {
-    private final short id;
+    private final String id;
     private final TimeConstraint room_c;
     
     /**
@@ -38,7 +38,7 @@ public class StudyRoom {
      * @param id Id ruangan. Misalnya 7602. (gimana kalo idnya misalnya, "MULTIMEDIA"?)
      * @param timeConstraint Konstrain waktu buka ruangan.
      */
-    public StudyRoom(short id, TimeConstraint timeConstraint){
+    public StudyRoom(String id, TimeConstraint timeConstraint){
         this.id = id;
         room_c = timeConstraint;
     }
@@ -47,7 +47,7 @@ public class StudyRoom {
      * Get Room Id. Gak guna kan deskripsinya :p
      * @return id ruangan
      */
-    public short getRoomId(){
+    public String getRoomId(){
         return id;
     }
     
