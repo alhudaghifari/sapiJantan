@@ -48,7 +48,7 @@ public final class GlobalUtils {
          * maka validitas data StudyClass dan StudyRoom (misalnya: id internal kelas yang harus unik) dijamin
          * oleh kelas ini. HAHAHA (evil laugh)
          */
-        private static class fileReader{
+        public static class fileReader{
             private String path;
             private String getPath(){
                 return path;
@@ -472,3 +472,25 @@ public final class GlobalUtils {
            
         }*/
 }
+
+
+/**
+ * sssssssssssssss       aaaaaaaaaaaaaaaaaaaaaaaa       ppppppppppppppppppppppp       iiiiiiiiii
+ * sssssssssssssss       aaaaaaaa        aaaaaaaa       pppppp          ppppppp       iiiiiiiiii
+ * sssssssssssssss       aaaaaaa          aaaaaaa       pppppp         pppppppp       iiiiiiiiii
+ * ssssss                aaaaaa             aaaaa       pppppp         pppppppp       iiiiiiiiii 
+ * ssssss                aaaaaa            aaaaaa       pppppp        ppppppppp       iiiiiiiiii
+ * ssssss                aaaaaa            aaaaaa       pppppp       pppppppppp       iiiiiiiiii
+ * sssssssssssssss       aaaaaa            aaaaaa       pppppp    ppppppppppppp       iiiiiiiiii
+ * sssssssssssssss       aaaaaa            aaaaaa       pppppp   pppppppppppppp       iiiiiiiiii
+ * sssssssssssssss       aaaaaaaaaaaaaaaaaaaaaaaa       ppppppppppppppppppppppp       iiiiiiiiii
+ *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
+ *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
+ *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
+ * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
+ * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
+ * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
+ * 
+ * 
+ * 
+ ****/
