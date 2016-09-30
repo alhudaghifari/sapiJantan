@@ -24,7 +24,7 @@ import java.util.LinkedList;
  * mata kuliah diassign ke TimeSlot yang sama.
  */
 public class TimeTable{
-    
+    private Random randomizer;
     /**
      * Kelas ini adalah struktur internal dari TimeTable dan dipakai utamanya di 
      * TimeTableLayer (juga struktur internal dari TimeTable). Catatan: Sebisa mungkin
@@ -83,7 +83,12 @@ public class TimeTable{
                     if(!this.equals(another)){
                         synchronized(this){
                             q_el.clear();
-                            q_el.addAll(another.q_el);
+                            for(int i = 0; i < q_el.size(); i++){
+                                q_el.add(
+                                        new TimeSlotElement(another.q_el.get(i).slotId,
+                                                another.q_el.get(i).slotLength, 
+                                                another.q_el.get(i).classInternalId));
+                            }
                         }
                     }
                 }
@@ -96,7 +101,13 @@ public class TimeTable{
                 public TimeSlot getCopy(){
                    TimeSlot dupli = new TimeSlot();
                    dupli.q_el.clear();
-                   dupli.q_el.addAll(this.q_el);
+                   //dupli.q_el.addAll(this.q_el);
+                   for(int i = 0; i < q_el.size(); i++){
+                       dupli.q_el.add(
+                               new TimeSlotElement(q_el.get(i).slotId,
+                                       q_el.get(i).slotLength, 
+                                       q_el.get(i).classInternalId));
+                   }
                    return dupli;
                 }
                 
@@ -114,7 +125,7 @@ public class TimeTable{
                  * @param classInternID kode rahasia kelas program kita. Pssst! Malu ah
                  */
                 public void SetSlotValue(int slotID, int slotLen, int classInternID){
-                    if(q_el.size() == 1){
+                    if(isEmpty()){
                         q_el.peek().ChangeValue(slotID, slotLen, slotID);
                     }
                     else
@@ -189,7 +200,7 @@ public class TimeTable{
                  * @return true jika ketemu.
                  */
                 public synchronized boolean isContainedHere(int sId){
-                    TimeSlotElement[] dupli = (TimeSlotElement[])q_el.toArray();
+                    TimeSlotElement[] dupli = q_el.toArray(new TimeSlotElement[q_el.size()]);
                     int i = 0; boolean found = false;
                     while(i < dupli.length && !found){
                         if(dupli[i].slotId == sId)
@@ -226,6 +237,10 @@ public class TimeTable{
                     TimeSlot ret = new TimeSlot();
                     if(pos != -99){
                         TimeSlotElement rem = q_el.remove(pos);
+                        //mungkin bakal jadi kosong...
+                        if(q_el.isEmpty()){
+                            q_el.add(new TimeSlotElement());
+                        }
                         ret.SetSlotValue(rem.slotId, rem.slotLength, rem.classInternalId);
                     }
                     return ret;
@@ -285,7 +300,10 @@ public class TimeTable{
                layer = new TimeSlot[colMax][rowMax];
                int iter;
                for(iter = 0; iter < colMax; iter++){
-                   Arrays.fill(layer[iter], new TimeSlot());
+                   int iter1;
+                   for(iter1 = 0; iter1 < rowMax; iter1++){
+                       layer[iter][iter1] = new TimeSlot();
+                   }
                }
                //Inisialisasi tabel konstrain, ya...sebut aja itu lah
                eligibleStatus = new boolean[colMax][rowMax];
@@ -326,6 +344,7 @@ public class TimeTable{
            public TimeTableLayer getCopy(){
                TimeTableLayer dupli = new TimeTableLayer();
                dupli.layer = new TimeSlot[colMax][rowMax];
+               dupli.eligibleStatus = new boolean[colMax][rowMax];
                //duplikasi isi layer dan eligible status TimeTableLayer ini ke TimeTableLayer dupli
                for(int i = 0; i < colMax; i++){
                    for(int j = 0; j < rowMax; j++){
@@ -341,12 +360,16 @@ public class TimeTable{
             * @return Posisi slot random yang dijamin memenuhi konstrain ruangan/layer ini. Null jika tidak ada
             */
            public int[] getRandomValidSlot(){
-               Random randomizer = new Random(System.currentTimeMillis());
-               int rouletteOut = randomizer.nextInt() % 1000;
+               //Random randomizer = new Random(System.currentTimeMillis());
+               int rouletteOut = randomizer.nextInt();
+               if(rouletteOut < 0)
+                   rouletteOut = -1*rouletteOut;
+               if(rouletteOut > 10000)
+                   rouletteOut %= 10000;
                int iterSlot = 0;
                int iterDay = 0;
                while(rouletteOut > 0){           
-                   if(iterDay < rowMax){
+                   if(iterDay < rowMax-1){
                        iterDay++;
                        rouletteOut--;
                    }
@@ -363,7 +386,7 @@ public class TimeTable{
                int step = 0;
                int limit = rowMax * colMax; //avoid infinit loop
                while(!eligibleStatus[iterSlot][iterDay] && step <= limit){
-                   if(iterDay < rowMax){
+                   if(iterDay < rowMax-1){
                        iterDay++;
                        step++;
                    }
@@ -385,18 +408,46 @@ public class TimeTable{
            }
 
            /**
-            * Isi slot spesifik dari sebuah slot yang ada di ruangan/layer ini
+            * Isi slot spesifik dari sebuah slot yang ada di ruangan/layer ini. Method ini akan 
+            * mengecek bahwa semua slot adalah valid (dapat diisi oleh kelas). Valid dalam artian
+            * mematuhi TimeConstraint dari kelas dan semua slot berada di ruangan yang terbuka (artinya
+            * eligiblestatus = true)
             * @param day hari
             * @param timeStart waktu mulai
             * @param slotId id slot 
             * @param slotLen panjang slot
             * @param classInternId kode kelas internal yang ada di antrian GlobalUtils.
             */
-           public void FillSpecificSlot(int day, int timeStart, 
+           public boolean FillSpecificSlot(int day, int timeStart, 
                    int slotId, int slotLen, int classInternId){
-               layer[timeStart][day].SetSlotValue(slotId, slotLen, classInternId);
-               for(int i = 1; i < slotLen; i++)
-                   layer[timeStart + 1][day].SetSlotValue(slotId, slotLen, classInternId);
+               boolean valid = true;
+               //cek semua bakal slot yang diisi memenuhi konstrain waktu dan ruangan terbuka
+               StudyClass sc = GlobalUtils.searchClassById(classInternId);
+               if(sc != null){
+                   int timeLimit_s = sc.getTimeConstraint().getTimeConstr()[0].getHour() - defaultStartTime;
+                   int timeLimit_e = sc.getTimeConstraint().getTimeConstr()[1].getHour() - defaultStartTime;
+                   int timeLimit_e_m = sc.getTimeConstraint().getTimeConstr()[1].getMinute();
+                   if(timeLimit_e_m > 0)
+                       timeLimit_e++;
+                   boolean dayLimit = sc.getTimeConstraint().getDayConstr()[day];
+                   int limit = timeStart + slotLen;
+                   if(timeStart >= timeLimit_s && limit < timeLimit_e && dayLimit 
+                           && eligibleStatus[timeStart][day]){
+                       //cek semua bakal slot yang diisi berada di ruangan yang terbuka
+                       if(limit  < colMax){
+                            for(int i = 0; i < slotLen; i++){
+                                TimeSlot ts  = layer[timeStart + i][day];
+                                ts.SetSlotValue(slotId, slotLen, classInternId);                   
+                             }                
+                        }
+                       else{
+                             valid = false;
+                        }
+                   }
+                   else valid = false;
+               }
+               else valid = false;
+               return valid;
            }
            
            /**
@@ -419,7 +470,7 @@ public class TimeTable{
                    for(j = 0; j < rowMax; j++){
                        int retSize = layer[i][j].getSlotLengthSize();
                        if(retSize > 1)
-                           sum += GlobalUtils.Combinatorial(2, retSize);
+                           sum += GlobalUtils.Combinatorial(retSize, 2);
                    }
                }
                return sum;
@@ -480,6 +531,13 @@ public class TimeTable{
                //jika ada, dan koordinatnya ketemu, maka remove.
                if(pos.length == 2){
                    ret = layer[pos[0]][pos[1]].RemoveSlot(slotId);
+                   //dan harus dihapus juga yang bawah-bawahnya sepanjang slot length
+                   int len = ret.getSlotLength();
+                   int iter = 0;
+                   while(iter < len && pos[0]+iter < colMax){
+                       layer[pos[0]+iter][pos[1]].RemoveSlot(slotId);
+                       iter++;
+                   }
                }
                return ret;
            }
@@ -494,6 +552,7 @@ public class TimeTable{
                int i = 0, j = 0; boolean found = false;
                int ret = -99;
                while(i < colMax && !found){
+                   j = 0;
                    while(j < rowMax && !found){
                        if((ret = layer[i][j].findSlotIdByClassId(classInternalId)) == -99)
                             j++;
@@ -526,6 +585,7 @@ public class TimeTable{
      * keunikan identifier masing-masing slot yang terisi kelas.
      */
     public TimeTable(){
+        randomizer = new Random(System.currentTimeMillis());
         //Retrieve copy tabel antrian dan daftar ruangan
         StudyClass[] aCopySCQueue = GlobalUtils.getStudyClassQueueCopy();
         //boolean[] aCopySchedStatus = GlobalUtils.getStudyClassScheduledStatus();
@@ -542,13 +602,38 @@ public class TimeTable{
         int countSC = aCopySCQueue.length;
         int slotId = 1;
         for(iterSCQueue = 0; iterSCQueue < countSC; iterSCQueue++){
-            Random roomRandomizer = new Random(System.currentTimeMillis());
-            int rR = roomRandomizer.nextInt() % layers.size();
+            //Random roomRandomizer = new Random(System.currentTimeMillis());
+            int rR = randomizer.nextInt();
+                if(rR < 0)
+                    rR = -1*rR;
+            rR %= layers.size();
+            //cek konstrain ruangan dari kelas yang diperiksa, jika rR tidak memenuhi konstrain ruangan
+            //maka cari ruangan terdekat yang dapat memenuhi konstrain
+            int roomConL = aCopySCQueue[iterSCQueue].getRoomConstraint().length;
+            if(roomConL > 0){
+                boolean roomValid = false;
+                while(!roomValid){
+                    int k = 0;
+                    while(k < roomConL && !roomValid){
+                         if(aCopySRList[rR].getRoomId().equals(aCopySCQueue[iterSCQueue].getRoomConstraint()[k]))
+                             roomValid = true;
+                         else
+                             k++;
+                    }
+                    if(!roomValid){
+                        rR = (rR+1)%layers.size();
+                    }
+                }
+            }
+            //cari slot random
             TimeTableLayer layerThisRoom = layers.get(rR);
-            int[] tr = layerThisRoom.getRandomValidSlot();
-            layerThisRoom.FillSpecificSlot(tr[1], tr[0], slotId, 
+            boolean valid = false;
+            while(!valid){
+                int[] tr = layerThisRoom.getRandomValidSlot();
+                valid = layerThisRoom.FillSpecificSlot(tr[1], tr[0], slotId, 
                     aCopySCQueue[iterSCQueue].getLength(), 
                     aCopySCQueue[iterSCQueue].getInternalID());
+            }
             //aCopySchedStatus, rasanya ga butuh ini
             slotId++; 
         }
@@ -572,9 +657,9 @@ public class TimeTable{
         TimeTable dupli = new TimeTable(0);
         dupli.layers = new LinkedList<>();
         for(int i = 0; i < layers.size(); i++){
-            dupli.layers.add(this.layers.get(i).getCopy());
+            dupli.layers.add(layers.get(i).getCopy());
         }
-        return dupli;
+         return dupli;
     }
     
     /**
@@ -584,7 +669,11 @@ public class TimeTable{
      * tiga elemen (slotdimulai, hari, indeksruangan), dengan indeksruangan menyatakan indeks ruangan di kontainer list
      * ruangan, sRoomList, di GlobalUtils.<br><br>
      * Catatan: kelas ini belum tentu menjamin validitas IdInternalKelas, slotdimulai, hari, dan indeksruangan. (dengan kata lain,
-     * tanggung jawab si pengguna kelas yang memasukkan data-data tersebut sebagai atribut kelas ini).
+     * tanggung jawab si pengguna kelas yang memasukkan data-data tersebut sebagai atribut kelas ini).<br><br>
+     * Catatan:  TimeTable.Simplified me-list semua entri (timeslot) yang ada dalam TimeTable. Artinya, jika ada satu 
+     * mata kuliah yang punya 4 sks, maka kuliah tersebut akan muncul 4 kali di dalam list TimeTable (dengan koordinat yang berbeda, 
+     * misal [0,0,0],[1,0,0],[2,0,0],[3,0,0] (format: slot, day, room), namun koordinat slot dipastikan selalu berurutan), 
+     * dan mungkin tersebar di seluruh list.
      */
     public class Simplified{
         private class SimplifiedElement{
@@ -608,9 +697,11 @@ public class TimeTable{
             int maxSlot = getLayerMaxSlot()[0];
             int maxDay = getLayerMaxSlot()[1];;
             while(itLayer < layers.size()){
+                itSlot = 0;
                 while(itSlot < maxSlot){
+                    itDay = 0;
                     while(itDay < maxDay){
-                        if(!layers.get(itLayer).layer[itSlot][itDay].q_el.isEmpty()){
+                        if(!layers.get(itLayer).layer[itSlot][itDay].isEmpty()){
                             int maxEl = layers.get(itLayer).layer[itSlot][itDay].q_el.size();
                             int i;
                             for(i = 0; i < maxEl; i++)
@@ -642,6 +733,7 @@ public class TimeTable{
          */
         public Simplified(int[] StudyClassInternalID, int[] positionSlot, int[] positionDay, int[] positionRoom){
             int iter;
+            list = new LinkedList<>();
             //cari panjang minimum di antara keempat parameter
             int maxIter = Math.min(StudyClassInternalID.length, 
                     Math.min(positionRoom.length, 
@@ -717,6 +809,63 @@ public class TimeTable{
                 return hoho;
             }
         }
+        
+        /**
+         * Method untuk menyingkirkan entri-entri dengan id internal kelas yang sama dalam sebuah TimeTable.Simplified, lalu
+         * memberikan sebuah TimeTable.Simplified baru yang berisi semua entri id internal kelas yang berbeda dan koordinat
+         * entri yang paling rendah.
+         * TimeTable.Simplified me-list semua entri (timeslot) yang ada dalam TimeTable. Artinya, jika ada satu 
+         * mata kuliah yang punya 4 sks, maka kuliah tersebut akan muncul 4 kali di dalam list TimeTable (dengan koordinat yang berbeda, 
+         * misal [0,0,0],[1,0,0],[2,0,0],[3,0,0] (format: slot, day, room), namun koordinat slot dipastikan selalu berurutan), 
+         * dan mungkin tersebar di seluruh list. Method ini mempertahankan entri mata kuliah tersebut yang memiliki koordinat slot 
+         * yang paling rendah (dalam contoh diatas yang dipertahankan adalah yang punya koordinat [0,0,0]), dan membuang 3 kemunculan
+         * yang lainnya dalam sebuah TimeTable.Simplified yang baru.
+         * @return TimeTable.Simplified baru yang gak mengandung referensi ke TimeTable.Simplified lama.
+         */
+        public TimeTable.Simplified stripDown(){
+            LinkedList<Integer> l_internID = new LinkedList<>();
+            LinkedList<Integer> l_start = new LinkedList<>();
+            LinkedList<Integer> l_positionDay = new LinkedList<>();
+            LinkedList<Integer> l_positionRoom = new LinkedList<>();
+            //baca iteratif dari awal list sampai akhir untuk menggolongkan data.
+            for(int i = 0; i < list.size(); i++){
+                int id_iterated = list.get(i).sC;
+                int ts_iterated = list.get(i).coordinate[0];
+                if(!l_internID.contains(id_iterated)){
+                    l_internID.add(id_iterated);
+                    l_start.add(ts_iterated);
+                    l_positionDay.add(list.get(i).coordinate[1]);
+                    l_positionRoom.add(list.get(i).coordinate[2]);
+                }
+                else{
+                    int idx = l_internID.indexOf(id_iterated);
+                    l_start.set(idx, Math.min(ts_iterated, l_start.get(idx)));
+                }
+            }
+            //convert ke array int.
+            Integer[] idWrap = l_internID.toArray(new Integer[l_internID.size()]);
+            int[] arrID = new int[idWrap.length];
+            for(int i = 0; i < arrID.length; i++){
+                arrID[i] = idWrap[i];
+            }
+            Integer[] PosSlotWrap = l_start.toArray(new Integer[l_start.size()]);
+            int[] arrPosSlot = new int[PosSlotWrap.length];
+            for(int i = 0; i < arrPosSlot.length; i++){
+                arrPosSlot[i] = PosSlotWrap[i];
+            }
+            Integer[] PosDayWrap = l_positionDay.toArray(new Integer[l_positionDay.size()]);
+            int[] arrPosDay = new int[PosDayWrap.length];
+            for(int i = 0; i < arrPosDay.length; i++){
+                arrPosDay[i] = PosDayWrap[i];
+            }
+            Integer[] PosRoomWrap = l_positionRoom.toArray(new Integer[l_positionRoom.size()]);
+            int[] arrPosRoom = new int[PosRoomWrap.length];
+            for(int i = 0; i < arrPosRoom.length; i++){
+                arrPosRoom[i] = PosRoomWrap[i];
+            }
+            //return sebuah TimeTable.Simplified baru
+            return new TimeTable.Simplified(arrID, arrPosSlot, arrPosDay, arrPosRoom);
+        }
     }
     
     /**
@@ -739,23 +888,13 @@ public class TimeTable{
      * @param new_pos_day
      * @param new_layernum
      * @return 
-     */
+     *
     private TimeTable move(int timeslotID, int layernum, int new_pos_slot,
             int new_pos_day, int new_layernum){
         //search for position
         TimeTable dupli = getCopy();
-        int[] posSlot = dupli.getSpesificSlotLocationById(timeslotID);
-        //abis itu pindahin: remove dulu baru add
-        if(posSlot.length == 3){
-            if(new_pos_slot != posSlot[0] && new_pos_day != posSlot[1] && new_layernum != posSlot[2]){
-                TimeSlot ret = dupli.layers.get(layernum).removeSlotById(timeslotID);
-                dupli.layers.get(layernum).FillSpecificSlot(new_pos_day, 
-                        new_pos_slot, ret.getSlotId(), ret.getSlotLength(), ret.getClassInternalId());  
-            }
-        }
         return dupli;
-    }
-    
+    }*/
     
     /**
      * Cari lokasi spesifik dari suatu timeSlotId.
@@ -821,7 +960,7 @@ public class TimeTable{
     
     //Sebuah kelas yang digunakan dalam generateNeighboringTimeTable. udah itu aja
     protected class gnttEngine implements Runnable{
-        private TimeSlot info; //informasi time slot yang di"sayang" oleh engine partikular ini.
+        private int info_id; //informasi time slot yang di"sayang" oleh engine partikular ini.
         //posisi info di timetable
         private int info_pos_slot; 
         private int info_pos_day;
@@ -842,6 +981,7 @@ public class TimeTable{
         private gnttEngine(TimeSlot ts){
             //dapetin semua info dari ts dari timetable ini.
             int[] aArray = TimeTable.this.getSpesificSlotLocation(ts);
+            info_id = ts.getSlotId();
             fillAttribute(aArray);
         }
         
@@ -851,6 +991,7 @@ public class TimeTable{
          */
         private gnttEngine(int timeSlotId){
             int[] aArray = TimeTable.this.getSpesificSlotLocationById(timeSlotId);
+            info_id = timeSlotId;
             fillAttribute(aArray);
         }
         
@@ -861,26 +1002,42 @@ public class TimeTable{
          * @param maxRow
          * @return 
          */
-        private LinkedList<TimeTable> moveToAllPosThisLayer(TimeTable info_t, int maxCol, int maxRow){
-            LinkedList<TimeTable> result = new LinkedList<>();
+        private LinkedList<TimeTable> moveToAllPosThisLayer(TimeTable info_t, int maxCol, int maxRow, int level){
+            LinkedList<TimeTable> res = new LinkedList<>();
             TimeTable dupli = null;
-            int icol = 0, irow = 0;
+            int icol = 0, irow;
             while(icol < maxCol){
+                irow = 0;
                 while(irow < maxRow){
-                    if(icol != info_pos_slot && irow != info_pos_day){
+                    if(!(icol == info_pos_slot && irow == info_pos_day && level == info_pos_layer)){
                         //buat TimeTable baru yang merupakan hasil modif dari info_t
                         dupli = info_t.getCopy();
                         //pindahkan slot dari posisi (info_pos_slot, info_pos_day) ke (icol,irow)
-                        dupli.move(info.getSlotId(), info_pos_layer, icol, irow, info_pos_layer);
-                        //append ke list result
-                        result.add(dupli);
+                        int timeslotID = info_id;
+                        int new_pos_slot = icol;
+                        int new_pos_day = irow;
+                        int new_layernum = level;
+                        int layernum = info_pos_layer;
+                        //artifak: method TimeTable.move.
+                        //**int[] posSlot = dupli.getSpesificSlotLocationById(timeslotID);
+                        //abis itu pindahin: remove dulu baru add
+                        //**if(posSlot.length == 3){
+                            //**if(new_pos_slot != posSlot[0] && new_pos_day != posSlot[1] && new_layernum != posSlot[2]){
+                        TimeSlot ret = dupli.layers.get(layernum).removeSlotById(timeslotID);
+                        boolean valid = dupli.layers.get(new_layernum).FillSpecificSlot(new_pos_day, 
+                             new_pos_slot, ret.getSlotId(), ret.getSlotLength(), ret.getClassInternalId());  
+                            //**}
+                        //**}
+                        //jika berhasil mindahin slot maka append ke list result
+                        if(valid)
+                            res.add(dupli);
                         dupli = null;
                     }
                     irow++;
                 }
                 icol++;
             }
-            return result;
+            return res;
         }
         
         
@@ -901,12 +1058,12 @@ public class TimeTable{
             int thickness = TimeTable.this.layers.size();
             int level = info_pos_layer;
             while(level < thickness){
-                result.addAll(moveToAllPosThisLayer(dupliOri, layerCol, layerRow));
+                result.addAll(moveToAllPosThisLayer(dupliOri, layerCol, layerRow, level));
                 level++;
             }
             level = info_pos_layer-1;
             while(level >= 0){
-                result.addAll(moveToAllPosThisLayer(dupliOri, layerCol, layerRow));
+                result.addAll(moveToAllPosThisLayer(dupliOri, layerCol, layerRow, level));
                 level--;
             }
         }
@@ -955,18 +1112,28 @@ public class TimeTable{
             engineCollection[i] = new gnttEngine(findTimeSlotIdByClassInternalId(aSCCopy[i].getInternalID()));
         }
         //start gnttEngine
+        Thread[] eCThread = new Thread[countClass];
         for(int i = 0; i < countClass; i++){
-            engineCollection[i].run();
+            eCThread[i] = new Thread(engineCollection[i]);
         }
-        //tunggu sampai masing-masing thread gnttEngine berhenti
-        
+        for(int i = 0; i < countClass; i++){
+            eCThread[i].start();
+        }
+        for(int i = 0; i < countClass; i++){
+            try {
+                eCThread[i].join();
+            } catch (InterruptedException ex) {
+                System.out.println(ex.toString());
+                break;
+            }
+        }
         //koleksi semua hasilnya
         LinkedList<TimeTable> result = new LinkedList<>();
         for(int i = 0; i < countClass; i++){
-            result.addAll(engineCollection[i].getResult());
+                result.addAll(engineCollection[i].getResult());
         }
-        
-        return (TimeTable[]) result.toArray();
+        TimeTable[] resultArr = result.toArray(new TimeTable[result.size()]);
+        return resultArr;
     }
 
     /**

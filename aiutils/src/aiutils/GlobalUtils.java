@@ -7,7 +7,6 @@ package aiutils;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.Scanner;
-import javax.swing.JOptionPane;
 
 /**
  * Kelas GlobalUtils berisi member-member yang dapat diakses seluruh modul tanpa
@@ -28,27 +27,14 @@ public final class GlobalUtils {
         private static LinkedList<StudyClass> sClassQueue = new LinkedList<>();
         private static LinkedList<StudyRoom> sRoomList = new LinkedList<>();
         
-        /**
-         * this main function is for testing the parser.
-         * you can make it become a commentar, ayee.
-         * SAPI JANTAN
-         * @param args 
-         */
-        public static void main(String[] args) {
-            fileReader filee = new fileReader();
-            System.out.println("Cobain Ruangan terakhir = "
-                    + GlobalUtils.sRoomList.getLast().getRoomId());
-            System.out.println("Cobain ruangan di jadwal terakhir = "
-            +  GlobalUtils.sClassQueue.getLast().getClassName());
-        }
-        
+        /*
         /**
          * Kelas FileReader yang membaca file untuk struktur data StudyClass dan StudyRoom. 
          * Karena kelas ini yang membaca file dan memasukkan data ke kontainer sClassQueue dan sRoomList,
          * maka validitas data StudyClass dan StudyRoom (misalnya: id internal kelas yang harus unik) dijamin
          * oleh kelas ini. HAHAHA (evil laugh)
-         */
-        public static class fileReader{
+         
+        private static class fileReader{
             private String path;
             private String getPath(){
                 return path;
@@ -58,10 +44,6 @@ public final class GlobalUtils {
                 this.path = path;
             }
             
-            /**
-             * konstruktor dengan path nya setting sendiri aye
-             * @param path 
-             */
             public fileReader(String path){
                 this.path = path;
                 read();
@@ -70,44 +52,20 @@ public final class GlobalUtils {
             /**
              * Konstruk filereader dengan path yang nunjuk ke file default: "d:/Testcase.txt".
              * Ya...suka-suka yang ngeprogram sih file defaultnya kemana.
-             */
+             
             public fileReader(){
                 path = "d:/Testcase.txt";
                 read();
             }
             
-            /**
-             * This is parser
-             */
             private synchronized void read(){
-                
+                //GlobalUtils global = new GlobalUtils();
                 boolean room = false;
                 boolean schedule = false;
                 String temp;
-                String kelas = "";
-                String awal = "";
-                String akhir = "";
-                String hari = "";
-                String kodeMatkul = "";
-                String durasi = "";
-                
-                StudyRoom roomStudy;
-                StudyClass classStudy;
-                MyTime startTime;
-                MyTime endTime;
-                short myHour;
-                short myMinute;
-                TimeConstraint timeCons;
-                boolean senin = false;
-                boolean selasa = false;
-                boolean rabu = false;
-                boolean kamis = false;
-                boolean jumat = false;
-                
-                
+
                 try{
                     Scanner inFile = new Scanner(new File(path)).useDelimiter("[\\r\\n]+");
-                    int jj=0;
                     while(inFile.hasNext()){
                         temp = inFile.next();
                         switch (temp) {
@@ -120,141 +78,20 @@ public final class GlobalUtils {
                                 schedule = true;
                                 break;
                         }
-                            
+
                         if(room && !temp.equals("Ruangan")) {
-                            String [] kata = temp.split(";");
-                            for (int i=0;i<kata.length;i++){
-                                switch (i) {
-                                    case 0:
-                                        kelas = kata[i];
-                                        break;
-                                    case 1:
-                                        awal = kata[i];
-                                        break;
-                                    case 2:
-                                        akhir = kata[i];
-                                        break;
-                                    case 3:
-                                        hari = kata[i];
-                                        break;
-                                }
-                            }
-                            /*** Start Time ***/
-                            String [] jam = awal.split("\\.");
-                            myHour = Short.valueOf(jam[0]);
-                            myMinute = Short.valueOf(jam[1]);
-                            startTime = new MyTime(myHour, myMinute);
-                            /*** End Time ***/
-                            String [] jam2 = akhir.split("\\.");
-                            myHour = Short.valueOf(jam2[0]);
-                            myMinute = Short.valueOf(jam2[1]);
-                            endTime = new MyTime(myHour, myMinute);
-                            
-                            /*** boolean hari ***/
-                            String [] hariArray = hari.split(",");
-                            for (int i=0;i<hariArray.length;i++){
-                                switch (hariArray[i]) {
-                                    case "1":
-                                        senin = true;
-                                        break;
-                                    case "2":
-                                        selasa = true;
-                                        break;
-                                    case "3":
-                                        rabu = true;
-                                        break;
-                                    case "4":
-                                        kamis = true;
-                                        break;
-                                    case "5":
-                                        jumat = true;
-                                        break;
-                                }
-                            }
-                            timeCons = new TimeConstraint(startTime, endTime,
-                                    senin, selasa, rabu, kamis, jumat);
-                            roomStudy = new StudyRoom(kelas, timeCons);
-                            GlobalUtils.sRoomList.add(roomStudy); 
+                            GlobalUtils.sRoomList.add(temp); //walah tempnya bukan tipe StudyRoom //global.setRoomStudy(temp);
                         }else if (schedule && !temp.equals("Jadwal")) {
-                            //**GlobalUtils.sClassQueue.add(temp);
-                            String [] kata = temp.split(";");
-                            for (int i=0;i<kata.length;i++){
-                                switch (i) {
-                                    case 0:
-                                        kodeMatkul = kata[i];
-                                        break;
-                                    case 1:
-                                        kelas = kata[i];
-                                        break;
-                                    case 2:
-                                        awal = kata[i];
-                                        break;
-                                    case 3:
-                                        akhir = kata[i];
-                                        break;
-                                    case 4:
-                                        durasi = kata[i];
-                                        break;
-                                    case 5:
-                                        hari = kata[i];
-                                        break;
-                                }
-                            }
-                            String [] kata2 = kelas.split(",");
-                            String [] roomCons = new String[10];
-                            for(int i=0; i<kata2.length;i++) {
-                                roomCons[i] = kata2[i];
-                            }
-                            /*** Start Time ***/
-                            String [] jam = awal.split("\\.");
-                            myHour = Short.valueOf(jam[0]);
-                            myMinute = Short.valueOf(jam[1]);
-                            startTime = new MyTime(myHour, myMinute);
-                            /*** End Time ***/
-                            String [] jam2 = akhir.split("\\.");
-                            myHour = Short.valueOf(jam2[0]);
-                            myMinute = Short.valueOf(jam2[1]);
-                            endTime = new MyTime(myHour, myMinute);
-                            
-                            /*** boolean hari ***/
-                            String [] hariArray = hari.split(",");
-                            for (int i=0;i<hariArray.length;i++){
-                                switch (hariArray[i]) {
-                                    case "1":
-                                        senin = true;
-                                        break;
-                                    case "2":
-                                        selasa = true;
-                                        break;
-                                    case "3":
-                                        rabu = true;
-                                        break;
-                                    case "4":
-                                        kamis = true;
-                                        break;
-                                    case "5":
-                                        jumat = true;
-                                        break;
-                                }
-                            }
-                            timeCons = new TimeConstraint(startTime, endTime,
-                                    senin, selasa, rabu, kamis, jumat);
-                            
-                            classStudy = new StudyClass(jj, 1, kodeMatkul,
-                                    Short.valueOf(durasi), roomCons, timeCons);
-                            GlobalUtils.sClassQueue.add(classStudy);
+                            GlobalUtils.sClassQueue.add(temp);
                         }
-                        jj++;
+
                     }
 
                 }catch(Exception e){
                     System.out.println("WOWOW there is a mistake when reading the file..");
-                    JOptionPane.showMessageDialog(null, 
-                            "WOWOW there is a mistake when reading the file..",
-                            "Be Careful",JOptionPane.ERROR_MESSAGE);
                 }
             }
-        }
+        }*/
 
         
         /**
@@ -289,7 +126,7 @@ public final class GlobalUtils {
          * kontainer-kontainer ini adalah sebuah list kosong sebelum dipanggil metod ini. 
          * Metod ini akan memanggil parser internal yang membaca file berisi input user, 
          * lalu parser tersebut yang memasukkan data ke dalam kontainer-kontainer ini.
-         */
+         
         public static void initialize(String path){
             //Some path checking here? Ga usah lah ya~
             sClassQueue.clear();
@@ -303,7 +140,7 @@ public final class GlobalUtils {
          * yang akan dijadwalkan berdasarkan input user. Defaultnya, kontainer ini adalah sebuah list kosong
          * sebelum dipanggil metod ini. Metod ini akan memanggil parser internal yang membaca file berisi
          * input user, lalu parser tersebut yang memasukkan data ke dalam kontainer ini.
-         */
+         
         public static void initStudyClassQueue(){
             sClassQueue.clear();
             fileReader fr = new fileReader();
@@ -317,13 +154,13 @@ public final class GlobalUtils {
          * adalah sebuah list kosong sebelum dipanggil metod ini. Metod ini akan memanggil 
          * parser internal yang membaca file berisi input user, lalu parser tersebut yang memasukkan
          * data ke dalam kontainer ini.
-         */
+         
         public static void initStudyRoomList(){
             sRoomList.clear();
             fileReader fr = new fileReader();
             fr.read();
             sClassQueue.clear(); //I know I know ini ga efisien, tapi mau gimana lagi nama metodnya begitu
-        }
+        }*/
         
         /*
          * 
@@ -343,8 +180,8 @@ public final class GlobalUtils {
          * @return Sebuah duplikat kontainer penyimpanan StudyClass berbentuk array biasa.
          */
         public static StudyClass[] getStudyClassQueueCopy(){
-            StudyClass[] dupli = (StudyClass[]) sClassQueue.toArray();
-            return dupli;
+            StudyClass[] dupli = sClassQueue.toArray(new StudyClass[sClassQueue.size()]);
+            return dupli;       
         }
         
         /*public static boolean[] getStudyClassScheduledStatus(){
@@ -359,7 +196,7 @@ public final class GlobalUtils {
          * @return Sebuah duplikat kontainer penyimpanan StudyClass berbentuk array biasa.
          */
         public static StudyRoom[] getStudyRoomListCopy(){
-            StudyRoom[] dupli = (StudyRoom[]) sRoomList.toArray();
+            StudyRoom[] dupli = sRoomList.toArray(new StudyRoom[sRoomList.size()]);
             return dupli;
         }
         
@@ -379,8 +216,26 @@ public final class GlobalUtils {
             return sRoomList.size();
         }
         
-        
-        
+        /**
+         * Cari sebuah studyClass berdasarkan internalId. Hasil StudyClass yang diberikan metod ini
+         * adalah StudyClass yang pertama kali ditemukan dalam kontainer global StudyClass. Jika tidak
+         * ada, maka yang dikembalikan adalah null. Hati-hati ya
+         * @param classInternId internal id kelas yang ingin dicari.
+         * @return Study Class hasil pencarian. Jika kontainer kosong / kelas tidak ditemukan, null 
+         */
+        public static StudyClass searchClassById(int classInternId){
+            boolean found = false; int k = 0;
+            while(k < sClassQueue.size() && !found){
+                   if(sClassQueue.get(k).getInternalID() == classInternId)
+                       found = true;
+                   else
+                       k++;
+            }
+            if(found)
+                return sClassQueue.get(k).getCopy();
+            else
+                return null;
+        }
         
         /*
          * Digunakan untuk mengeset atau menambahkan ruangan ayng available
@@ -472,25 +327,3 @@ public final class GlobalUtils {
            
         }*/
 }
-
-
-/**
- * sssssssssssssss       aaaaaaaaaaaaaaaaaaaaaaaa       ppppppppppppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaaa        aaaaaaaa       pppppp          ppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaa          aaaaaaa       pppppp         pppppppp       iiiiiiiiii
- * ssssss                aaaaaa             aaaaa       pppppp         pppppppp       iiiiiiiiii 
- * ssssss                aaaaaa            aaaaaa       pppppp        ppppppppp       iiiiiiiiii
- * ssssss                aaaaaa            aaaaaa       pppppp       pppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp    ppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp   pppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaaaaaaaaaaaaaaaaaaa       ppppppppppppppppppppppp       iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * 
- * 
- * 
- ****/
