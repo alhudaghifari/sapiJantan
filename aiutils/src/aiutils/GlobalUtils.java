@@ -27,6 +27,7 @@ public final class GlobalUtils {
         //private static ConcurrentLinkedQueue<StudyRoom> sRoomList;
         private static LinkedList<StudyClass> sClassQueue = new LinkedList<>();
         private static LinkedList<StudyRoom> sRoomList = new LinkedList<>();
+        private static int factinvoked = 0;
         
         /**
          * this main function is for testing the parser.
@@ -255,7 +256,6 @@ public final class GlobalUtils {
                 }
             }
         }
-
         
         /**
          * Faktorial biasa. nothing fancy (ga nemu metod bawaan yang handle faktorial huwaaa)
@@ -263,6 +263,7 @@ public final class GlobalUtils {
          * @return 1 jika n kurang sama dengan 1, n! jika n lebih besar 1
          */
         public static int Factorial(int n){
+            factinvoked++;
             if (n <= 1)
                 return 1;
             else
@@ -289,7 +290,7 @@ public final class GlobalUtils {
          * kontainer-kontainer ini adalah sebuah list kosong sebelum dipanggil metod ini. 
          * Metod ini akan memanggil parser internal yang membaca file berisi input user, 
          * lalu parser tersebut yang memasukkan data ke dalam kontainer-kontainer ini.
-         */
+         
         public static void initialize(String path){
             //Some path checking here? Ga usah lah ya~
             sClassQueue.clear();
@@ -303,7 +304,7 @@ public final class GlobalUtils {
          * yang akan dijadwalkan berdasarkan input user. Defaultnya, kontainer ini adalah sebuah list kosong
          * sebelum dipanggil metod ini. Metod ini akan memanggil parser internal yang membaca file berisi
          * input user, lalu parser tersebut yang memasukkan data ke dalam kontainer ini.
-         */
+         
         public static void initStudyClassQueue(){
             sClassQueue.clear();
             fileReader fr = new fileReader();
@@ -317,13 +318,13 @@ public final class GlobalUtils {
          * adalah sebuah list kosong sebelum dipanggil metod ini. Metod ini akan memanggil 
          * parser internal yang membaca file berisi input user, lalu parser tersebut yang memasukkan
          * data ke dalam kontainer ini.
-         */
+         
         public static void initStudyRoomList(){
             sRoomList.clear();
             fileReader fr = new fileReader();
             fr.read();
             sClassQueue.clear(); //I know I know ini ga efisien, tapi mau gimana lagi nama metodnya begitu
-        }
+        }*/
         
         /*
          * 
@@ -343,8 +344,8 @@ public final class GlobalUtils {
          * @return Sebuah duplikat kontainer penyimpanan StudyClass berbentuk array biasa.
          */
         public static StudyClass[] getStudyClassQueueCopy(){
-            StudyClass[] dupli = (StudyClass[]) sClassQueue.toArray();
-            return dupli;
+            StudyClass[] dupli = sClassQueue.toArray(new StudyClass[sClassQueue.size()]);
+            return dupli;       
         }
         
         /*public static boolean[] getStudyClassScheduledStatus(){
@@ -359,7 +360,7 @@ public final class GlobalUtils {
          * @return Sebuah duplikat kontainer penyimpanan StudyClass berbentuk array biasa.
          */
         public static StudyRoom[] getStudyRoomListCopy(){
-            StudyRoom[] dupli = (StudyRoom[]) sRoomList.toArray();
+            StudyRoom[] dupli = sRoomList.toArray(new StudyRoom[sRoomList.size()]);
             return dupli;
         }
         
@@ -379,8 +380,36 @@ public final class GlobalUtils {
             return sRoomList.size();
         }
         
+        /**
+         * Cari sebuah studyClass berdasarkan internalId. Hasil StudyClass yang diberikan metod ini
+         * adalah StudyClass yang pertama kali ditemukan dalam kontainer global StudyClass. Jika tidak
+         * ada, maka yang dikembalikan adalah null. Hati-hati ya
+         * @param classInternId internal id kelas yang ingin dicari.
+         * @return Study Class hasil pencarian. Jika kontainer kosong / kelas tidak ditemukan, null 
+         */
+        public static StudyClass searchClassById(int classInternId){
+            boolean found = false; int k = 0;
+            while(k < sClassQueue.size() && !found){
+                   if(sClassQueue.get(k).getInternalID() == classInternId)
+                       found = true;
+                   else
+                       k++;
+            }
+            if(found)
+                return sClassQueue.get(k).getCopy();
+            else
+                return null;
+        }
         
+                
+        //for debugging process
+        public static void setSRoomList(LinkedList<StudyRoom> sR){
+            sRoomList = new LinkedList<>(sR);
+        }
         
+        public static void setStudyList(LinkedList<StudyClass> sC){
+            sClassQueue = new LinkedList<>(sC);
+        }
         
         /*
          * Digunakan untuk mengeset atau menambahkan ruangan ayng available
@@ -472,25 +501,3 @@ public final class GlobalUtils {
            
         }*/
 }
-
-
-/**
- * sssssssssssssss       aaaaaaaaaaaaaaaaaaaaaaaa       ppppppppppppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaaa        aaaaaaaa       pppppp          ppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaa          aaaaaaa       pppppp         pppppppp       iiiiiiiiii
- * ssssss                aaaaaa             aaaaa       pppppp         pppppppp       iiiiiiiiii 
- * ssssss                aaaaaa            aaaaaa       pppppp        ppppppppp       iiiiiiiiii
- * ssssss                aaaaaa            aaaaaa       pppppp       pppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp    ppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp   pppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaaaaaaaaaaaaaaaaaaa       ppppppppppppppppppppppp       iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * 
- * 
- * 
- ****/

@@ -60,25 +60,3 @@ public class StudyRoom {
     }
     
 }
-
-
-/**
- * sssssssssssssss       aaaaaaaaaaaaaaaaaaaaaaaa       ppppppppppppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaaa        aaaaaaaa       pppppp          ppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaa          aaaaaaa       pppppp         pppppppp       iiiiiiiiii
- * ssssss                aaaaaa             aaaaa       pppppp         pppppppp       iiiiiiiiii 
- * ssssss                aaaaaa            aaaaaa       pppppp        ppppppppp       iiiiiiiiii
- * ssssss                aaaaaa            aaaaaa       pppppp       pppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp    ppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp   pppppppppppppp       iiiiiiiiii
- * sssssssssssssss       aaaaaaaaaaaaaaaaaaaaaaaa       ppppppppppppppppppppppp       iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- *         sssssss       aaaaaaaaaaaaaaaaaaaaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * sssssssssssssss       aaaaaa            aaaaaa       pppppp                        iiiiiiiiii
- * 
- * 
- * 
- ****/
