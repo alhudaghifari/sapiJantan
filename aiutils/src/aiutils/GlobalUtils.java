@@ -7,6 +7,7 @@ package aiutils;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  * Kelas GlobalUtils berisi member-member yang dapat diakses seluruh modul tanpa
