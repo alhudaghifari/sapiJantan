@@ -240,8 +240,9 @@ class Mutator{
   for(int i=0; i<population; i++)
   {
     TimeTable.Simplified s = candidate[i].getSimplified();
-    int temp = (s.getStudyClassPosition(18, false)[0]);
-    System.out.println("wawa"+temp);
+    System.out.println(s.getStudyClassPosition(i, false)[0]);
+    System.out.println(s.getStudyClassPosition(i, false)[1]);
+    System.out.println(s.getStudyClassPosition(i, false)[2]);
   }
 //==========versi-lama==========================================================
 //    for(int i=0; i<population; i++){
@@ -260,13 +261,11 @@ class Mutator{
   public static void main(String[] args){
     System.out.println("hello world");
     GlobalUtils global = new GlobalUtils();
-    GlobalUtils.fileReader f = new GlobalUtils.fileReader();
     TimeTable t = new TimeTable();
-    System.out.println(t.getSimplified().getStudyClassPosition(0, false)[0]);
+    System.out.println(t.getSimplified().getStudyClassPosition(0, true)[0]);
     
     Mutator m = new Mutator(50, 1, 1000);
-    m.generatePrime();
-    m.printPopulation();
-    System.out.println("wawawa");
+    ///m.generatePrime();
+   // m.printPopulation();
   }
 }

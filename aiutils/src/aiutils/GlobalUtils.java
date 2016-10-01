@@ -7,7 +7,6 @@ package aiutils;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.Scanner;
-import javax.swing.JOptionPane;
 
 /**
  * Kelas GlobalUtils berisi member-member yang dapat diakses seluruh modul tanpa
@@ -27,28 +26,16 @@ public final class GlobalUtils {
         //private static ConcurrentLinkedQueue<StudyRoom> sRoomList;
         private static LinkedList<StudyClass> sClassQueue = new LinkedList<>();
         private static LinkedList<StudyRoom> sRoomList = new LinkedList<>();
+        private static int factinvoked = 0;
         
-        /**
-         * this main function is for testing the parser.
-         * you can make it become a commentar, ayee.
-         * SAPI JANTAN
-         * @param args 
-         */
-        public static void main(String[] args) {
-            fileReader filee = new fileReader();
-            System.out.println("Cobain Ruangan terakhir = "
-                    + GlobalUtils.sRoomList.getLast().getRoomId());
-            System.out.println("Cobain ruangan di jadwal terakhir = "
-            +  GlobalUtils.sClassQueue.getLast().getClassName());
-        }
-        
+        /*
         /**
          * Kelas FileReader yang membaca file untuk struktur data StudyClass dan StudyRoom. 
          * Karena kelas ini yang membaca file dan memasukkan data ke kontainer sClassQueue dan sRoomList,
          * maka validitas data StudyClass dan StudyRoom (misalnya: id internal kelas yang harus unik) dijamin
          * oleh kelas ini. HAHAHA (evil laugh)
-         */
-        public static class fileReader{
+         
+        private static class fileReader{
             private String path;
             private String getPath(){
                 return path;
@@ -58,10 +45,6 @@ public final class GlobalUtils {
                 this.path = path;
             }
             
-            /**
-             * konstruktor dengan path nya setting sendiri aye
-             * @param path 
-             */
             public fileReader(String path){
                 this.path = path;
                 read();
@@ -70,44 +53,20 @@ public final class GlobalUtils {
             /**
              * Konstruk filereader dengan path yang nunjuk ke file default: "d:/Testcase.txt".
              * Ya...suka-suka yang ngeprogram sih file defaultnya kemana.
-             */
+             
             public fileReader(){
                 path = "d:/Testcase.txt";
                 read();
             }
             
-            /**
-             * This is parser
-             */
             private synchronized void read(){
-                
+                //GlobalUtils global = new GlobalUtils();
                 boolean room = false;
                 boolean schedule = false;
                 String temp;
-                String kelas = "";
-                String awal = "";
-                String akhir = "";
-                String hari = "";
-                String kodeMatkul = "";
-                String durasi = "";
-                
-                StudyRoom roomStudy;
-                StudyClass classStudy;
-                MyTime startTime;
-                MyTime endTime;
-                short myHour;
-                short myMinute;
-                TimeConstraint timeCons;
-                boolean senin = false;
-                boolean selasa = false;
-                boolean rabu = false;
-                boolean kamis = false;
-                boolean jumat = false;
-                
-                
+
                 try{
                     Scanner inFile = new Scanner(new File(path)).useDelimiter("[\\r\\n]+");
-                    int jj=0;
                     while(inFile.hasNext()){
                         temp = inFile.next();
                         switch (temp) {
@@ -120,141 +79,20 @@ public final class GlobalUtils {
                                 schedule = true;
                                 break;
                         }
-                            
+
                         if(room && !temp.equals("Ruangan")) {
-                            String [] kata = temp.split(";");
-                            for (int i=0;i<kata.length;i++){
-                                switch (i) {
-                                    case 0:
-                                        kelas = kata[i];
-                                        break;
-                                    case 1:
-                                        awal = kata[i];
-                                        break;
-                                    case 2:
-                                        akhir = kata[i];
-                                        break;
-                                    case 3:
-                                        hari = kata[i];
-                                        break;
-                                }
-                            }
-                            /*** Start Time ***/
-                            String [] jam = awal.split("\\.");
-                            myHour = Short.valueOf(jam[0]);
-                            myMinute = Short.valueOf(jam[1]);
-                            startTime = new MyTime(myHour, myMinute);
-                            /*** End Time ***/
-                            String [] jam2 = akhir.split("\\.");
-                            myHour = Short.valueOf(jam2[0]);
-                            myMinute = Short.valueOf(jam2[1]);
-                            endTime = new MyTime(myHour, myMinute);
-                            
-                            /*** boolean hari ***/
-                            String [] hariArray = hari.split(",");
-                            for (int i=0;i<hariArray.length;i++){
-                                switch (hariArray[i]) {
-                                    case "1":
-                                        senin = true;
-                                        break;
-                                    case "2":
-                                        selasa = true;
-                                        break;
-                                    case "3":
-                                        rabu = true;
-                                        break;
-                                    case "4":
-                                        kamis = true;
-                                        break;
-                                    case "5":
-                                        jumat = true;
-                                        break;
-                                }
-                            }
-                            timeCons = new TimeConstraint(startTime, endTime,
-                                    senin, selasa, rabu, kamis, jumat);
-                            roomStudy = new StudyRoom(kelas, timeCons);
-                            GlobalUtils.sRoomList.add(roomStudy); 
+                            GlobalUtils.sRoomList.add(temp); //walah tempnya bukan tipe StudyRoom //global.setRoomStudy(temp);
                         }else if (schedule && !temp.equals("Jadwal")) {
-                            //**GlobalUtils.sClassQueue.add(temp);
-                            String [] kata = temp.split(";");
-                            for (int i=0;i<kata.length;i++){
-                                switch (i) {
-                                    case 0:
-                                        kodeMatkul = kata[i];
-                                        break;
-                                    case 1:
-                                        kelas = kata[i];
-                                        break;
-                                    case 2:
-                                        awal = kata[i];
-                                        break;
-                                    case 3:
-                                        akhir = kata[i];
-                                        break;
-                                    case 4:
-                                        durasi = kata[i];
-                                        break;
-                                    case 5:
-                                        hari = kata[i];
-                                        break;
-                                }
-                            }
-                            String [] kata2 = kelas.split(",");
-                            String [] roomCons = new String[10];
-                            for(int i=0; i<kata2.length;i++) {
-                                roomCons[i] = kata2[i];
-                            }
-                            /*** Start Time ***/
-                            String [] jam = awal.split("\\.");
-                            myHour = Short.valueOf(jam[0]);
-                            myMinute = Short.valueOf(jam[1]);
-                            startTime = new MyTime(myHour, myMinute);
-                            /*** End Time ***/
-                            String [] jam2 = akhir.split("\\.");
-                            myHour = Short.valueOf(jam2[0]);
-                            myMinute = Short.valueOf(jam2[1]);
-                            endTime = new MyTime(myHour, myMinute);
-                            
-                            /*** boolean hari ***/
-                            String [] hariArray = hari.split(",");
-                            for (int i=0;i<hariArray.length;i++){
-                                switch (hariArray[i]) {
-                                    case "1":
-                                        senin = true;
-                                        break;
-                                    case "2":
-                                        selasa = true;
-                                        break;
-                                    case "3":
-                                        rabu = true;
-                                        break;
-                                    case "4":
-                                        kamis = true;
-                                        break;
-                                    case "5":
-                                        jumat = true;
-                                        break;
-                                }
-                            }
-                            timeCons = new TimeConstraint(startTime, endTime,
-                                    senin, selasa, rabu, kamis, jumat);
-                            
-                            classStudy = new StudyClass(jj, 1, kodeMatkul,
-                                    Short.valueOf(durasi), roomCons, timeCons);
-                            GlobalUtils.sClassQueue.add(classStudy);
+                            GlobalUtils.sClassQueue.add(temp);
                         }
-                        jj++;
+
                     }
 
                 }catch(Exception e){
                     System.out.println("WOWOW there is a mistake when reading the file..");
-                    JOptionPane.showMessageDialog(null, 
-                            "WOWOW there is a mistake when reading the file..",
-                            "Be Careful",JOptionPane.ERROR_MESSAGE);
                 }
             }
-        }
+        }*/
 
         
         /**
@@ -263,6 +101,7 @@ public final class GlobalUtils {
          * @return 1 jika n kurang sama dengan 1, n! jika n lebih besar 1
          */
         public static int Factorial(int n){
+            factinvoked++;
             if (n <= 1)
                 return 1;
             else
@@ -398,6 +237,16 @@ public final class GlobalUtils {
                 return sClassQueue.get(k).getCopy();
             else
                 return null;
+        }
+        
+                
+        //for debugging process
+        public static void setSRoomList(LinkedList<StudyRoom> sR){
+            sRoomList = new LinkedList<>(sR);
+        }
+        
+        public static void setStudyList(LinkedList<StudyClass> sC){
+            sClassQueue = new LinkedList<>(sC);
         }
         
         /*
