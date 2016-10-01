@@ -359,16 +359,20 @@ public class TimeTable{
             * Dapetin posisi slot random yang dapat diisi 
             * @return Posisi slot random yang dijamin memenuhi konstrain ruangan/layer ini. Null jika tidak ada
             */
-           public int[] getRandomValidSlot(){
+           public int[] getRandomValidSlot(int constrBegin, int constrEnd, boolean[] constrDay){
                //Random randomizer = new Random(System.currentTimeMillis());
-               int rouletteOut = randomizer.nextInt();
+               int begin_c = constrBegin - defaultStartTime;
+               int end_c = constrEnd - defaultStartTime;
+               boolean[] day_c = constrDay.clone();
+                int rouletteOut = randomizer.nextInt();
                if(rouletteOut < 0)
                    rouletteOut = -1*rouletteOut;
                if(rouletteOut > 10000)
                    rouletteOut %= 10000;
                int iterSlot = 0;
                int iterDay = 0;
-               while(rouletteOut > 0){           
+               while(rouletteOut > 0){
+                   //skip iterDay yang jatuh pada konstrain kelas = false
                    if(iterDay < rowMax-1){
                        iterDay++;
                        rouletteOut--;
@@ -376,8 +380,8 @@ public class TimeTable{
                    else{
                        iterDay = 0;
                        iterSlot++;
-                       if(iterSlot == colMax)
-                           iterSlot = 0;
+                       if(iterSlot == colMax || iterSlot == end_c)
+                           iterSlot = begin_c;
                        rouletteOut--;
                    }
                }
@@ -393,14 +397,16 @@ public class TimeTable{
                    else{
                        iterDay = 0;
                        iterSlot++;
-                       if(iterSlot == colMax)
-                           iterSlot = 0;
+                       if(iterSlot == colMax || iterSlot == end_c)
+                           iterSlot = begin_c;
                        step++;
                    }
                }
                if(step <= limit){
                    int[] ret = new int[2];
                    ret[0] = iterSlot;
+                   while(!day_c[iterDay] && iterDay < rowMax - 1)
+                       iterDay++;
                    ret[1] = iterDay;
                    return ret;
                }
@@ -430,7 +436,7 @@ public class TimeTable{
                    if(timeLimit_e_m > 0)
                        timeLimit_e++;
                    boolean dayLimit = sc.getTimeConstraint().getDayConstr()[day];
-                   int limit = timeStart + slotLen;
+                   int limit = timeStart + slotLen - 1;
                    if(timeStart >= timeLimit_s && limit < timeLimit_e && dayLimit 
                            && eligibleStatus[timeStart][day]){
                        //cek semua bakal slot yang diisi berada di ruangan yang terbuka
@@ -517,6 +523,9 @@ public class TimeTable{
                        coordinate[1] = row;
                    }
                }
+               if(coordinate.length == 1){
+                   int i = 0;
+               }
                return coordinate;
            }
            
@@ -601,6 +610,7 @@ public class TimeTable{
         //iterSchedStatus = 0;
         int countSC = aCopySCQueue.length;
         int slotId = 1;
+        //for debuggin
         for(iterSCQueue = 0; iterSCQueue < countSC; iterSCQueue++){
             //Random roomRandomizer = new Random(System.currentTimeMillis());
             int rR = randomizer.nextInt();
@@ -609,32 +619,47 @@ public class TimeTable{
             rR %= layers.size();
             //cek konstrain ruangan dari kelas yang diperiksa, jika rR tidak memenuhi konstrain ruangan
             //maka cari ruangan terdekat yang dapat memenuhi konstrain
-            int roomConL = aCopySCQueue[iterSCQueue].getRoomConstraint().length;
-            if(roomConL > 0){
-                boolean roomValid = false;
-                while(!roomValid){
-                    int k = 0;
-                    while(k < roomConL && !roomValid){
-                         if(aCopySRList[rR].getRoomId().equals(aCopySCQueue[iterSCQueue].getRoomConstraint()[k]))
-                             roomValid = true;
-                         else
-                             k++;
-                    }
-                    if(!roomValid){
-                        rR = (rR+1)%layers.size();
+            boolean repeatFindingRoom = true;
+            while(repeatFindingRoom){
+                int roomConL = aCopySCQueue[iterSCQueue].getRoomConstraint().length;
+                if(roomConL > 0){
+                    boolean roomValid = false;
+                    int step = 0;
+                    while(!roomValid && step < layers.size()){
+                        int k = 0;
+                        while(k < roomConL && !roomValid){
+                             if(aCopySRList[rR].getRoomId().equals(aCopySCQueue[iterSCQueue].getRoomConstraint()[k]))
+                                 roomValid = true;
+                             else
+                                 k++;
+                        }
+                        if(!roomValid){
+                            rR = (rR+1)%layers.size();
+                            step++;
+                        }
                     }
                 }
-            }
-            //cari slot random
-            TimeTableLayer layerThisRoom = layers.get(rR);
-            boolean valid = false;
-            while(!valid){
-                int[] tr = layerThisRoom.getRandomValidSlot();
-                valid = layerThisRoom.FillSpecificSlot(tr[1], tr[0], slotId, 
-                    aCopySCQueue[iterSCQueue].getLength(), 
-                    aCopySCQueue[iterSCQueue].getInternalID());
-            }
-            //aCopySchedStatus, rasanya ga butuh ini
+                //cari slot random
+                TimeConstraint tc_iterated= aCopySCQueue[iterSCQueue].getTimeConstraint().getCopy();
+                TimeTableLayer layerThisRoom = layers.get(rR);
+                boolean valid = false;
+                while(!valid){
+                    int[] tr = 
+                            layerThisRoom.getRandomValidSlot(tc_iterated.getTimeConstr()[0].getHour(), 
+                                    tc_iterated.getTimeConstr()[1].getHour(),tc_iterated.getDayConstr());
+                    if(tr != null){
+                        valid = layerThisRoom.FillSpecificSlot(tr[1], tr[0], slotId, 
+                        aCopySCQueue[iterSCQueue].getLength(), 
+                        aCopySCQueue[iterSCQueue].getInternalID());
+                        repeatFindingRoom = false;
+                    }
+                    //also for debugging
+                    else{
+                        rR = (rR+1)%layers.size();
+                        break;
+                    }
+                }
+            }        
             slotId++; 
         }
     }
@@ -982,7 +1007,11 @@ public class TimeTable{
             //dapetin semua info dari ts dari timetable ini.
             int[] aArray = TimeTable.this.getSpesificSlotLocation(ts);
             info_id = ts.getSlotId();
-            fillAttribute(aArray);
+            if(aArray.length == 3)
+                fillAttribute(aArray);
+            else{
+                int why = 0;
+            }
         }
         
         /*
@@ -992,7 +1021,11 @@ public class TimeTable{
         private gnttEngine(int timeSlotId){
             int[] aArray = TimeTable.this.getSpesificSlotLocationById(timeSlotId);
             info_id = timeSlotId;
-            fillAttribute(aArray);
+            if(aArray.length == 3)
+                fillAttribute(aArray);
+            else{
+                int why = 0;
+            }
         }
         
         /*
@@ -1108,6 +1141,7 @@ public class TimeTable{
         StudyClass[] aSCCopy = GlobalUtils.getStudyClassQueueCopy();
         //berdasarkan banyaknya slot yang terisi, buat gnttEngine
         gnttEngine[] engineCollection = new gnttEngine[countClass];
+        //TimeTable.Simplified sim = getSimplified().stripDown();
         for(int i = 0; i < countClass; i++){
             engineCollection[i] = new gnttEngine(findTimeSlotIdByClassInternalId(aSCCopy[i].getInternalID()));
         }
