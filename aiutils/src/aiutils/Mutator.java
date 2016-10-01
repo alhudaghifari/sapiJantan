@@ -50,19 +50,6 @@ class Mutator{
       candidate[i] = new TimeTable();
     }
     
-//==========versi-lama==========================================================
-//    //initialization
-//    candidates = new int[population][variation_length];
-//    Random rnd = new Random(rand);
-//    rand++;
-//    
-//    //generate random value
-//    for(int i=0; i<population; i++){
-//      for(int j=0; j<variation_length; j++)
-//      {
-//        candidates[i][j] = rnd.nextInt(10);
-//      }
-//    }
   }
   
   public void setMutationRate(int m){
@@ -126,13 +113,13 @@ class Mutator{
       }
       
       //apply natural selection
-      //geneticSelect(fitness);
+      geneticSelect(fitness);
       //geneticBreed(fitness);
-      //geneticMutate(fitness);
+      geneticMutate(fitness);
       
       //check prime found of not
       if(fitnessCheck(fitness) > 0) break;
-      break;
+      //break;
       //printPopulation();
     }
     
@@ -231,7 +218,7 @@ class Mutator{
     for(int i=0; i<population; i++){
       if(mutationRate > rnd.nextInt(100)){
         System.out.println("sup");
-        //generate random tabel
+        candidate[i] = new TimeTable();
       }
     }
   }
@@ -239,10 +226,10 @@ class Mutator{
   public void printPopulation(){
   for(int i=0; i<population; i++)
   {
-    TimeTable.Simplified s = candidate[i].getSimplified();
-    System.out.println(s.getStudyClassPosition(i, false)[0]);
-    System.out.println(s.getStudyClassPosition(i, false)[1]);
-    System.out.println(s.getStudyClassPosition(i, false)[2]);
+   // TimeTable.Simplified s = candidate[i].getSimplified();
+   // System.out.println(s.getStudyClassPosition(i, false)[0]);
+   // System.out.println(s.getStudyClassPosition(i, false)[1]);
+   // System.out.println(s.getStudyClassPosition(i, false)[2]);
   }
 //==========versi-lama==========================================================
 //    for(int i=0; i<population; i++){
@@ -262,10 +249,10 @@ class Mutator{
     System.out.println("hello world");
     GlobalUtils global = new GlobalUtils();
     TimeTable t = new TimeTable();
-    System.out.println(t.getSimplified().getStudyClassPosition(0, true)[0]);
+    //System.out.println(t.getSimplified().getStudyClassPosition(0, true)[0]);
     
     Mutator m = new Mutator(50, 1, 1000);
-    ///m.generatePrime();
-   // m.printPopulation();
+    m.generatePrime();
+    //m.printPopulation();
   }
 }
