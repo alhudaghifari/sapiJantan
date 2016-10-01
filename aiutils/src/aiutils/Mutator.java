@@ -31,7 +31,7 @@ class Mutator{
     mutationComplexity = 1;
     //variation = target;
     //variation_length = variation.length;
-    //maxFitness = variation.length;
+    maxFitness = 0;
     rand = (int) System.currentTimeMillis();
     
     generateCandidates();
@@ -67,16 +67,8 @@ class Mutator{
   public int fitnessFunction(TimeTable n){
     int point = 0;
     point = n.CountTotalConflict();
-    //cari fitness
     
     return point;
-//==========versi-lama==========================================================
-//    int point = 0;
-//    for(int i=0; i<variation_length; i++){
-//      if (n[i] == variation[i]) point++; 
-//    }
-//    
-//    return point;
   }
   
   public int fitnessCheck(int[] fitness){
@@ -88,10 +80,10 @@ class Mutator{
   }
   
   public int bestFitness(int[] fitness){
-    int max = 0;
+    int max = 99999;
     int maxi = 0;
     for(int i=0; i<population; i++){
-      if(fitness[i] > max){
+      if(fitness[i] < max){
         max = fitness[i];
         maxi = i;
       }
@@ -109,7 +101,7 @@ class Mutator{
       for(int j=0; j<population; j++)
       {
         fitness[j] = fitnessFunction(candidate[j]);
-        System.out.println("fitness:"+fitness[j]);
+        //System.out.println("fitness:"+fitness[j]);
       }
       
       //apply natural selection
@@ -118,12 +110,13 @@ class Mutator{
       geneticMutate(fitness);
       
       //check prime found of not
-      if(fitnessCheck(fitness) > 0) break;
+      if(fitnessCheck(fitness) == maxFitness) break;
       //break;
       //printPopulation();
     }
     
     prime = candidate[bestFitness(fitness)];
+    printPopulation(prime);
   }
   
   public int averageFitness(int[] fitness){
@@ -133,36 +126,34 @@ class Mutator{
     }
     
     int result = sum/population;
-    if (result == 0) result = 1;
-    System.out.println("fitness"+(result));
+    //System.out.println("fitness"+(result));
     return result;
   }
   
   public void geneticSelect(int[] fitness){
-    int minimumFitness = averageFitness(fitness);
+    int failFitness = averageFitness(fitness);
     
-    //mark those with bad genes
-    int best = 0;
+    
+    int best = 99999;
+    int besti = 0;
     for(int i=0; i<population; i++){
-      if(fitness[i] < minimumFitness){
-        fitness[i] = -1;
-      }
-      
-      //also mark with best genes
-      if(fitness[i] > best){
+      //mark with best genes
+      if(fitness[i] < best){
         best = fitness[i];
+        besti = i;
       }
+      //mark those with bad genes
+      if(fitness[i] > failFitness){
+        fitness[i] = -1;
+      }    
     }
     
     //replace bad genes with best
     for(int i=0; i<population; i++){
       if(fitness[i] == -1){
-        fitness[i] = best;
+        fitness[i] = new Integer(fitness[besti]);
         //kopi isi tabel buruk dengan yang bagus
-        
-        
-        
-//versi-lama        System.arraycopy( candidates[best], 0, candidates[i], 0, variation_length);
+        candidate[i] = candidate[besti].getCopy();
       }
     }
   }
@@ -223,19 +214,14 @@ class Mutator{
     }
   }
   
-  public void printPopulation(){
-  for(int i=0; i<population; i++)
-  {
-   // TimeTable.Simplified s = candidate[i].getSimplified();
-   // System.out.println(s.getStudyClassPosition(i, false)[0]);
-   // System.out.println(s.getStudyClassPosition(i, false)[1]);
-   // System.out.println(s.getStudyClassPosition(i, false)[2]);
-  }
-//==========versi-lama==========================================================
-//    for(int i=0; i<population; i++){
-//      System.out.println(Arrays.toString(candidates[i]));
-//    }
-//    System.out.println("---------------------------------------------------");
+  public void printPopulation(TimeTable t){
+    for(int i=0; i<t.getSimplified().getSize(); i++)
+    {
+       	System.out.println(t.getSimplified().getStudyClassPosition(i,false)[0]);
+        System.out.println(t.getSimplified().getStudyClassPosition(i,false)[1]);
+        System.out.println(t.getSimplified().getStudyClassPosition(i,false)[2]);
+        System.out.println("========================================");
+    }
   }
   
   public void printPrime(){
@@ -248,6 +234,7 @@ class Mutator{
   public static void main(String[] args){
     System.out.println("hello world");
     GlobalUtils global = new GlobalUtils();
+    GlobalUtils.fileReader f = new GlobalUtils.fileReader();
     TimeTable t = new TimeTable();
     //System.out.println(t.getSimplified().getStudyClassPosition(0, true)[0]);
     
