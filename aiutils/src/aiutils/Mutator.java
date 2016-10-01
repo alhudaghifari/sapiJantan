@@ -249,6 +249,8 @@ class Mutator{
   
   public static void main(String[] args){
     System.out.println("hello world");
-    
+    GlobalUtils global = new GlobalUtils();
+    TimeTable t = new TimeTable();
+    System.out.println(t.getSimplified().getStudyClassPosition(0, false)[0]);
   }
 }
