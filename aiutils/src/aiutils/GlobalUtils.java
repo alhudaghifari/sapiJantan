@@ -28,13 +28,13 @@ public final class GlobalUtils {
         private static LinkedList<StudyRoom> sRoomList = new LinkedList<>();
         private static int factinvoked = 0;
         
-        /*
+        
         /**
          * Kelas FileReader yang membaca file untuk struktur data StudyClass dan StudyRoom. 
          * Karena kelas ini yang membaca file dan memasukkan data ke kontainer sClassQueue dan sRoomList,
          * maka validitas data StudyClass dan StudyRoom (misalnya: id internal kelas yang harus unik) dijamin
          * oleh kelas ini. HAHAHA (evil laugh)
-         
+        */ 
         private static class fileReader{
             private String path;
             private String getPath(){
@@ -53,7 +53,7 @@ public final class GlobalUtils {
             /**
              * Konstruk filereader dengan path yang nunjuk ke file default: "d:/Testcase.txt".
              * Ya...suka-suka yang ngeprogram sih file defaultnya kemana.
-             
+            */ 
             public fileReader(){
                 path = "d:/Testcase.txt";
                 read();
@@ -92,7 +92,7 @@ public final class GlobalUtils {
                     System.out.println("WOWOW there is a mistake when reading the file..");
                 }
             }
-        }*/
+        }
 
         
         /**
@@ -128,7 +128,7 @@ public final class GlobalUtils {
          * kontainer-kontainer ini adalah sebuah list kosong sebelum dipanggil metod ini. 
          * Metod ini akan memanggil parser internal yang membaca file berisi input user, 
          * lalu parser tersebut yang memasukkan data ke dalam kontainer-kontainer ini.
-         
+         */
         public static void initialize(String path){
             //Some path checking here? Ga usah lah ya~
             sClassQueue.clear();
@@ -142,7 +142,7 @@ public final class GlobalUtils {
          * yang akan dijadwalkan berdasarkan input user. Defaultnya, kontainer ini adalah sebuah list kosong
          * sebelum dipanggil metod ini. Metod ini akan memanggil parser internal yang membaca file berisi
          * input user, lalu parser tersebut yang memasukkan data ke dalam kontainer ini.
-         
+         */
         public static void initStudyClassQueue(){
             sClassQueue.clear();
             fileReader fr = new fileReader();
@@ -156,13 +156,13 @@ public final class GlobalUtils {
          * adalah sebuah list kosong sebelum dipanggil metod ini. Metod ini akan memanggil 
          * parser internal yang membaca file berisi input user, lalu parser tersebut yang memasukkan
          * data ke dalam kontainer ini.
-         
+         */
         public static void initStudyRoomList(){
             sRoomList.clear();
             fileReader fr = new fileReader();
             fr.read();
             sClassQueue.clear(); //I know I know ini ga efisien, tapi mau gimana lagi nama metodnya begitu
-        }*/
+        }
         
         /*
          * 
