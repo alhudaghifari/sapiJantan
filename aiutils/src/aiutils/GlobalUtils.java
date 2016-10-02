@@ -27,6 +27,19 @@ public final class GlobalUtils {
         private static LinkedList<StudyClass> sClassQueue = new LinkedList<>();
         private static LinkedList<StudyRoom> sRoomList = new LinkedList<>();
         
+           /**
+          * this main function is for testing the parser.
+          * you can make it become a commentar, ayee.
+          * SAPI JANTAN
+          * @param args 
+          */
+         public static void main(String[] args) {
+             fileReader filee = new fileReader();
+             System.out.println("Cobain Ruangan terakhir = "
+                      GlobalUtils.sRoomList.getLast().getRoomId());
+             System.out.println("Cobain ruangan di jadwal terakhir = "
+               GlobalUtils.sClassQueue.getLast().getClassName());
+         }
         /**
          * Kelas FileReader yang membaca file untuk struktur data StudyClass dan StudyRoom. 
          * Karena kelas ini yang membaca file dan memasukkan data ke kontainer sClassQueue dan sRoomList,
