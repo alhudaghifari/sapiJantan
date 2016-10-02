@@ -165,24 +165,43 @@ class Mutator{
     //generate tabel kosong sebanyak generasi
     TimeTable[] sucessor = new TimeTable[population];
     
-    int crossPoint = 0;
-    int endPoint = 0;
+    int size = candidate[0].getSimplified().getSize();
+    int[] e0 = new int[size];
+    int[] e1 = new int[size];
+    int[] e2 = new int[size];
+    int[] eid = new int[size];
+    int crossPoint = rnd.nextInt(size);
+    
     
     for(int i=0; i<population; i++){
       //pick mate
       int mate = rnd.nextInt(population);
       
-      //determine which gene to use
-      
       //use parents gene to make sucessor
+      for(int j=0; j<size-crossPoint; j++){
+        eid[j] = candidate[i].getSimplified().getStudyClassInternalId(j);
+        e0[j] = candidate[i].getSimplified().getStudyClassPosition(j, false)[0];
+        e1[j] = candidate[i].getSimplified().getStudyClassPosition(j, false)[1];
+        e2[j] = candidate[i].getSimplified().getStudyClassPosition(j, false)[2];
+      }
+      //use mate gene for the rest
+      for(int j=crossPoint; j<size; j++){
+        eid[j] = candidate[mate].getSimplified().getStudyClassInternalId(j);
+        e0[j] = candidate[mate].getSimplified().getStudyClassPosition(j, false)[0];
+        e1[j] = candidate[mate].getSimplified().getStudyClassPosition(j, false)[1];
+        e2[j] = candidate[mate].getSimplified().getStudyClassPosition(j, false)[2];
+      }
       
+      TimeTable.Simplified child;
+      //child = new TimeTable.Simplified(eid,e0,e1,e2);
+
       //check if parent is better than successor, if so use parent(the best one)
       if(fitnessFunction(candidate[i]) > fitnessFunction(sucessor[i])){
         if(fitnessFunction(candidate[i]) > fitnessFunction(candidate[mate])){
           //tetap gunakan nilai parent-i
         }
         else{
-          System.arraycopy( candidate[mate], 0, sucessor[i], 0, crossPoint);
+          
         }
       }
       else if(fitnessFunction(sucessor[i]) >= fitnessFunction(candidate[i])){
@@ -235,7 +254,11 @@ class Mutator{
     System.out.println("hello world");
     GlobalUtils global = new GlobalUtils();
     GlobalUtils.fileReader f = new GlobalUtils.fileReader();
-    TimeTable t = new TimeTable();
+    
+    //int[] er = new int[20]; 
+    //TimeTable t = new TimeTable();
+    //TimeTable.Simplified ts;
+    //ts = new TimeTable.Simplified(er,er,er,er);
     //System.out.println(t.getSimplified().getStudyClassPosition(0, true)[0]);
     
     Mutator m = new Mutator(50, 1, 1000);
