@@ -126,7 +126,7 @@ public class TimeTable{
                  */
                 public void SetSlotValue(int slotID, int slotLen, int classInternID){
                     if(isEmpty()){
-                        q_el.peek().ChangeValue(slotID, slotLen, slotID);
+                        q_el.peek().ChangeValue(slotID, slotLen, classInternID);
                     }
                     else
                         q_el.add(new TimeSlotElement(slotID, slotLen, classInternID));
@@ -798,14 +798,36 @@ public class TimeTable{
             }
         }
         
-        /*
+        /**
          * Buat sebuah TimeTable baru berdasarkan TimeTable versi yang lebih simpel ini. 
          * Belum diimplementasikan. (Namun definisi metod udah final).
          * @return TimeTable baru
-         *
+         */
         public TimeTable makeTimeTable(){
-            
-        }*/
+            TimeTable.Simplified dupli = stripDown();
+            int[] duplimiss = dupli.getMissingClass(); //debug
+            //buat sebuah TimeTable kosong, lalu inisialisasi semua layernya.
+            TimeTable ret = new TimeTable(0);
+            StudyRoom[] aCopySRRoom = GlobalUtils.getStudyRoomListCopy();
+            ret.layers = new LinkedList<>();
+            ret.randomizer = new Random(System.currentTimeMillis());
+            for(int i = 0; i < aCopySRRoom.length; i++){
+                ret.layers.add(new TimeTableLayer(aCopySRRoom[i]));
+            }
+            //iteratif baca satu-satu list dupli yang ada, masukkan ke ret
+            int slotID = 1;
+            for(int i = 0; i < dupli.getSize(); i++){
+                StudyClass sc = GlobalUtils.searchClassById(dupli.getStudyClassInternalId(i));
+                int scSks = sc.getLength();
+                int[] scpos = dupli.getStudyClassPosition(i, true);
+                boolean he = ret.layers.get(scpos[2]).FillSpecificSlot(scpos[1], scpos[0], slotID, scSks, sc.getInternalID());
+                slotID++;
+                TimeTable.Simplified T = ret.getSimplified().stripDown();
+                int[] Tmiss = T.getMissingClass();
+                int ik = 0;
+            }
+            return ret;
+        }
         /**
          * Dapatkan banyaknya elemen yang ada dalam TimeTable.Simplified ini
          * @return banyaknya elemen yang ada dalam TimeTable.Simplified ini
@@ -956,14 +978,17 @@ public class TimeTable{
             int sizeOfRet = scCopyIntId.length - arrOfId.length;
             int[] ret = new int[sizeOfRet];
             int iterRet = 0;
-            int iterGId = 0;
-            for(int i = 0; i < arrOfId.length; i++){
-                if(scCopyIntId[iterGId] != arrOfId[i]){
-                    ret[iterRet] = scCopyIntId[i]+1; 
-                    iterGId++;
+            int iterArrOId = 0;
+            for(int i = 0; i < scCopyIntId.length; i++){
+                if(scCopyIntId[i] != arrOfId[iterArrOId]){
+                    ret[iterRet] = scCopyIntId[i];
+                    if(iterArrOId < arrOfId.length -1)
+                        i++;
                     iterRet++;
                 }
-                iterGId++;
+                if(iterArrOId < arrOfId.length - 1){
+                        iterArrOId++;
+                }
             }
             return ret;
         }
@@ -1034,6 +1059,27 @@ public class TimeTable{
         }
     }
     
+    /**
+     * Dapatkan semua internal id kelas yang menempati posisi tertentu dalam TimeTable.
+     * @param slot posisi slot (dari 0 - 11, 0 menyatakan jam 7 pagi)
+     * @param day posisi hari (dari 0 - 4, 0 menyatakan senin)
+     * @param room posisi ruangan (urutan ruangan sama dengan yang ada di kontainer sRoomList di GlobalUtils)
+     * @return semua internal id kelas yang menempati slot tersebut. Jika posisi tersebut kosong / ga ada, yang
+     * diberikan adalah array satu elemen [-99].
+     */
+    public int[] getClassInternalIDByPosition(int slot, int day, int room){
+       int roommax = layers.size();
+       int[] slotmax = getLayerMaxSlot();
+       if(slot < slotmax[0] && day < slotmax[1] && room < roommax ){
+            int retSize = layers.get(room).layer[slot][day].q_el.size();
+            int[] ret = new int[retSize];
+            for(int i = 0; i < retSize; i++){
+                ret[i] = layers.get(room).layer[slot][day].q_el.get(i).classInternalId;
+            }
+            return ret;
+       }
+       else return new int[]{-99};
+    }
     /**
      * Sama kayak getSpesificSlotLocationBySlotId, tapi parameternya adalah TimeSlot !!!Jangan dipakai!!!.
      * Metod ini sebenernya cuma useful di kelas TimeTable, Trollololololol

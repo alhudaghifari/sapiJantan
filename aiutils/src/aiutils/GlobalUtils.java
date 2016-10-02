@@ -8,7 +8,6 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
-
 /**
  * Kelas GlobalUtils berisi member-member yang dapat diakses seluruh modul tanpa
  * harus diinstansiasi. Intinya adalah kelas ini mengandung kontainer list yang 
@@ -27,21 +26,6 @@ public final class GlobalUtils {
         //private static ConcurrentLinkedQueue<StudyRoom> sRoomList;
         private static LinkedList<StudyClass> sClassQueue = new LinkedList<>();
         private static LinkedList<StudyRoom> sRoomList = new LinkedList<>();
-        private static int factinvoked = 0;
-        
-        /**
-         * this main function is for testing the parser.
-         * you can make it become a commentar, ayee.
-         * SAPI JANTAN
-         * @param args 
-         */
-        public static void main(String[] args) {
-            fileReader filee = new fileReader();
-            System.out.println("Cobain Ruangan terakhir = "
-                    + GlobalUtils.sRoomList.getLast().getRoomId());
-            System.out.println("Cobain ruangan di jadwal terakhir = "
-            +  GlobalUtils.sClassQueue.getLast().getClassName());
-        }
         
         /**
          * Kelas FileReader yang membaca file untuk struktur data StudyClass dan StudyRoom. 
@@ -78,7 +62,7 @@ public final class GlobalUtils {
             }
             
             /**
-             * This is parser
+             * This is parser. THIS IS PARSEEERRRRR!!!!
              */
             private synchronized void read(){
                 
@@ -256,6 +240,7 @@ public final class GlobalUtils {
                 }
             }
         }
+
         
         /**
          * Faktorial biasa. nothing fancy (ga nemu metod bawaan yang handle faktorial huwaaa)
@@ -263,7 +248,6 @@ public final class GlobalUtils {
          * @return 1 jika n kurang sama dengan 1, n! jika n lebih besar 1
          */
         public static int Factorial(int n){
-            factinvoked++;
             if (n <= 1)
                 return 1;
             else
@@ -399,16 +383,6 @@ public final class GlobalUtils {
                 return sClassQueue.get(k).getCopy();
             else
                 return null;
-        }
-        
-                
-        //for debugging process
-        public static void setSRoomList(LinkedList<StudyRoom> sR){
-            sRoomList = new LinkedList<>(sR);
-        }
-        
-        public static void setStudyList(LinkedList<StudyClass> sC){
-            sClassQueue = new LinkedList<>(sC);
         }
         
         /*
