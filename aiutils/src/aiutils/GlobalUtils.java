@@ -379,7 +379,25 @@ public final class GlobalUtils {
             return sRoomList.size();
         }
         
-        
+        /**
+         * 
+         * @param classInternalID
+         * @return 
+         */
+        public static StudyClass searchClassById(int classInternalID){
+            //iteratif biassa
+            int i; boolean found = false;
+            for(i = 0; i < sClassQueue.size(); i++){
+                if(sClassQueue.get(i).getInternalID() == classInternalID){
+                    found = true;
+                    break;
+                }
+            }
+            //if(found)
+                return sClassQueue.get(i);
+            //else
+                //sreturn new StudyClass();
+        }
         
         
         /*
