@@ -5,15 +5,16 @@
  */
 package Algo;
 
+import aiutils.GlobalUtils;
 import aiutils.TimeTable;
 import java.util.Random;
 
 public class Simanneal {
     TimeTable tt;
-    float P = 0;
+    double P = 0;
     int T = 1000;
     
-    Simanneal(TimeTable t, float p)
+    Simanneal(TimeTable t, double p)
     {
         tt = t;
         P = p;
@@ -24,6 +25,7 @@ public class Simanneal {
         boolean finded = false;
         int i=0;
         double prob;
+        
         //generate neighborn
         TimeTable tx[] = new TimeTable[tt.getSimplified().getSize()];
         tx = tt.generateNeighboringTimeTable();
@@ -104,10 +106,10 @@ public class Simanneal {
         return thatsit;
     }
     
-    void run()
+    void runSim()
     {
-        boolean br = false;
-        while(tt.CountTotalConflict()>0 && !br)
+        int i=0;
+        while(tt.CountTotalConflict()>0 && i<100)
         {
             if(T>0)
                Sim();
@@ -115,6 +117,34 @@ public class Simanneal {
             {
                greed(); 
             }
+            i++;
+        }
+        printPopulation(tt);
+    }
+    
+    void runHill()
+    {
+        int i=0;
+        while(tt.CountTotalConflict()>0 && i<100)
+        {
+            greed(); 
+            i++;
+        }
+        printPopulation(tt);
+    }
+    
+    public void printPopulation(TimeTable t){
+        TimeTable.Simplified ta = t.getSimplified();
+        TimeTable.Simplified ts = ta.stripDown();
+        int size = ts.getSize();
+        for(int i=0; i<size; i++)
+        {
+            System.out.println(GlobalUtils.searchClassById(ts.getStudyClassInternalId(i)).getClassName());
+            System.out.println(GlobalUtils.searchClassById(ts.getStudyClassInternalId(i)).getLength());
+            System.out.println("slot: "+ts.getStudyClassPosition(i,false)[0]);
+            System.out.println("ruang: "+ts.getStudyClassPosition(i,false)[1]);
+            System.out.println("hari: "+ts.getStudyClassPosition(i,false)[2]);
+            System.out.println("========================================");
         }
     }
 }
