@@ -38,61 +38,9 @@ class Mutator{
     System.out.println("-----initial--------------------------");
     //printPopulation();
   }
-  
-  public void setPopulation(int pd){
-    population = pd;
-  }
-  
-  public void generateCandidates(){
-    candidate = new TimeTable[population];
-    for(int i=0; i<population; i++)
-    {
-      candidate[i] = new TimeTable();
-    }
-    
-  }
-  
-  public void setMutationRate(int m){
-    mutationRate = m;
-  }
-  
-  public void setMutationComplexity(int m){
-    mutationComplexity = m;
-  }
-  
-  public void setCandidates(TimeTable[] n){
-    candidate = n;
-  }
-  
-  public int fitnessFunction(TimeTable n){
-    int point = 0;
-    point = n.CountTotalConflict();
-    
-    return point;
-  }
-  
-  public int fitnessCheck(int[] fitness){
-    for(int i=0; i<population; i++){
-      if(fitness[i] == maxFitness) return i; 
-    }
-    
-    return -99;
-  }
-  
-  public int bestFitness(int[] fitness){
-    int max = 99999;
-    int maxi = 0;
-    for(int i=0; i<population; i++){
-      if(fitness[i] < max){
-        max = fitness[i];
-        maxi = i;
-      }
-      
-    }
-    
-    return maxi;
-  }
-  
+//==============================================================================
+//program-utama, panggil untuk cari solusi
+//==============================================================================
   public void generatePrime(){
     int[] fitness = new int[population];
     
@@ -106,7 +54,7 @@ class Mutator{
       
       //apply natural selection
       geneticSelect(fitness);
-      //geneticBreed(fitness);
+      geneticBreed(fitness);
       geneticMutate(fitness);
       
       //check prime found of not
@@ -118,7 +66,61 @@ class Mutator{
     prime = candidate[bestFitness(fitness)];
     printPopulation(prime);
   }
-  
+//==============================================================================
+  public void setPopulation(int pd){
+    population = pd;
+  }
+//==============================================================================  
+  public void generateCandidates(){
+    candidate = new TimeTable[population];
+    for(int i=0; i<population; i++)
+    {
+      candidate[i] = new TimeTable();
+    }
+    
+  }
+//==============================================================================  
+  public void setMutationRate(int m){
+    mutationRate = m;
+  }
+//============================================================================== 
+  public void setMutationComplexity(int m){
+    mutationComplexity = m;
+  }
+//============================================================================== 
+  public void setCandidates(TimeTable[] n){
+    candidate = n;
+  }
+//==============================================================================
+  public int fitnessFunction(TimeTable n){
+    int point = 0;
+    point = n.CountTotalConflict();
+    
+    return point;
+  }
+//============================================================================== 
+  public int fitnessCheck(int[] fitness){
+    for(int i=0; i<population; i++){
+      if(fitness[i] == maxFitness) return i; 
+    }
+    
+    return -99;
+  }
+//==============================================================================
+  public int bestFitness(int[] fitness){
+    int max = 99999;
+    int maxi = 0;
+    for(int i=0; i<population; i++){
+      if(fitness[i] < max){
+        max = fitness[i];
+        maxi = i;
+      }
+      
+    }
+    
+    return maxi;
+  }
+//==============================================================================
   public int averageFitness(int[] fitness){
     int sum = 0;
     for(int i=0; i<population; i++){
@@ -129,7 +131,7 @@ class Mutator{
     //System.out.println("fitness"+(result));
     return result;
   }
-  
+//==============================================================================  
   public void geneticSelect(int[] fitness){
     int failFitness = averageFitness(fitness);
     
@@ -157,7 +159,7 @@ class Mutator{
       }
     }
   }
-  
+//==============================================================================  
   public void geneticBreed(int[] fitness){
     Random rnd = new Random(rand);
     rand++;
@@ -192,16 +194,17 @@ class Mutator{
         e2[j] = candidate[mate].getSimplified().getStudyClassPosition(j, false)[2];
       }
       
-      TimeTable.Simplified child;
-      //child = new TimeTable.Simplified(eid,e0,e1,e2);
+      TimeTable t = new TimeTable(0);
+      TimeTable.Simplified ta = t.makeNewTimeTableSimplified(eid, e0, e1, e2);
+      sucessor[i] = ta.makeTimeTable();
 
       //check if parent is better than successor, if so use parent(the best one)
       if(fitnessFunction(candidate[i]) > fitnessFunction(sucessor[i])){
         if(fitnessFunction(candidate[i]) > fitnessFunction(candidate[mate])){
-          //tetap gunakan nilai parent-i
+          sucessor[i] = candidate[i];
         }
         else{
-          
+          sucessor[i] = candidate[mate];
         }
       }
       else if(fitnessFunction(sucessor[i]) >= fitnessFunction(candidate[i])){
@@ -209,7 +212,7 @@ class Mutator{
           //do nothing, gunakan nilai sucessor
         }
         else{
-          //gunakan nilai parent-mate
+          sucessor[i] = candidate[mate];
         }
       }
       
@@ -217,9 +220,9 @@ class Mutator{
     }
     
     //replace old candidates
-    //kopi nilai suksesor ke kandidat lama
+    candidate = sucessor;
   }
-  
+//==============================================================================  
   public void geneticMutate(int[] fitness){
     Random rnd = new Random(rand);
     rand++;
@@ -232,33 +235,36 @@ class Mutator{
       }
     }
   }
-  
+//==============================================================================  
   public void printPopulation(TimeTable t){
-    for(int i=0; i<t.getSimplified().getSize(); i++)
+    TimeTable.Simplified ta = t.getSimplified();
+    TimeTable.Simplified ts = ta.stripDown();
+    int size = ts.getSize();
+    for(int i=0; i<size; i++)
     {
-       	System.out.println(t.getSimplified().getStudyClassPosition(i,false)[0]);
-        System.out.println(t.getSimplified().getStudyClassPosition(i,false)[1]);
-        System.out.println(t.getSimplified().getStudyClassPosition(i,false)[2]);
+        System.out.println(GlobalUtils.searchClassById(ts.getStudyClassInternalId(i)).getClassName());
+        System.out.println(GlobalUtils.searchClassById(ts.getStudyClassInternalId(i)).getLength());
+       	System.out.println("slot: "+ts.getStudyClassPosition(i,false)[0]);
+        System.out.println("ruang: "+ts.getStudyClassPosition(i,false)[1]);
+        System.out.println("hari: "+ts.getStudyClassPosition(i,false)[2]);
         System.out.println("========================================");
     }
   }
-  
+//==============================================================================  
   public void printPrime(){
-
-//==========versi-lama==========================================================
-//    System.out.println(Arrays.toString(prime));
+    printPopulation(prime);
   }
-  
+//==============================================================================  
   
   public static void main(String[] args){
     System.out.println("hello world");
     GlobalUtils global = new GlobalUtils();
     GlobalUtils.fileReader f = new GlobalUtils.fileReader();
     
-    //int[] er = new int[20]; 
+    int[] er = new int[20]; 
     //TimeTable t = new TimeTable();
-    //TimeTable.Simplified ts;
-    //ts = new TimeTable.Simplified(er,er,er,er);
+    TimeTable t = new TimeTable(0);
+    TimeTable.Simplified ta = t.makeNewTimeTableSimplified(er, er, er, er);
     //System.out.println(t.getSimplified().getStudyClassPosition(0, true)[0]);
     
     Mutator m = new Mutator(50, 1, 1000);

@@ -1007,6 +1007,10 @@ public class TimeTable{
         return new Simplified();
     }
 
+    public TimeTable.Simplified makeNewTimeTableSimplified(int[] StudyClassInternalId, 
+            int[] slot, int[] day, int[] room){
+        return new Simplified(StudyClassInternalId, slot, day, room);
+    }
     /*
      * 
      * @param timeslotID
