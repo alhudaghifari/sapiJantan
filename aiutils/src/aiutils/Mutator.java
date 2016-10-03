@@ -167,20 +167,22 @@ class Mutator{
     //generate tabel kosong sebanyak generasi
     TimeTable[] sucessor = new TimeTable[population];
     
-    int size = candidate[0].getSimplified().getSize();
-    int[] e0 = new int[size];
-    int[] e1 = new int[size];
-    int[] e2 = new int[size];
-    int[] eid = new int[size];
-    int crossPoint = rnd.nextInt(size);
+   
     
     
     for(int i=0; i<population; i++){
-      //pick mate
+      //inisialisasi
       int mate = rnd.nextInt(population);
+      int size = candidate[i].getSimplified().getSize();
+      int[] e0 = new int[size];
+      int[] e1 = new int[size];
+      int[] e2 = new int[size];
+      int[] eid = new int[size];
+      int crossPoint = rnd.nextInt(size);
+      
       
       //use parents gene to make sucessor
-      for(int j=0; j<size-crossPoint; j++){
+      for(int j=0; j<crossPoint; j++){
         eid[j] = candidate[i].getSimplified().getStudyClassInternalId(j);
         e0[j] = candidate[i].getSimplified().getStudyClassPosition(j, false)[0];
         e1[j] = candidate[i].getSimplified().getStudyClassPosition(j, false)[1];
