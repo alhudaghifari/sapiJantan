@@ -12,7 +12,6 @@ public class Simanneal {
     TimeTable tt;
     float P = 0;
     int T = 1000;
-    TimeTable tx[] = new TimeTable[100];
     
     Simanneal(TimeTable t, float p)
     {
@@ -24,8 +23,9 @@ public class Simanneal {
     {
         boolean finded = false;
         int i=0;
-        float prob;
+        double prob;
         //generate neighborn
+        TimeTable tx[] = new TimeTable[tt.getSimplified().getSize()];
         tx = tt.generateNeighboringTimeTable();
         
         //cari konflik yang lebih baik kalo ketemu 1 langsung TT berubah
@@ -43,7 +43,7 @@ public class Simanneal {
             else
             {
                 //ukur probabilitas
-                prob = (float)Math.exp(-1*((tt.CountTotalConflict() - tx[i].CountTotalConflict())/T));
+                prob = Math.exp(-1*((tt.CountTotalConflict() - tx[i].CountTotalConflict())/T));
                 T--;
                 if(prob>=P)
                 {
@@ -63,10 +63,11 @@ public class Simanneal {
     {
         boolean finded = false;
         int index;
+        TimeTable tx[] = new TimeTable[tt.getSimplified().getSize()];
         tx = tt.generateNeighboringTimeTable();
-        int r[] = new int[100];
+        int r[] = new int[tx.length];
         
-        for(int i=0;i<100;i++)
+        for(int i=0;i<tx.length;i++)
         {
             r[i] = tx[i].CountTotalConflict();
         }
