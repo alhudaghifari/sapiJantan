@@ -251,8 +251,8 @@ class Mutator{
     }
   }
 //==============================================================================  
-  public void printPrime(){
-    printPopulation(prime);
+  public TimeTable getPrime(){
+    return prime;
   }
 //==============================================================================  
   
