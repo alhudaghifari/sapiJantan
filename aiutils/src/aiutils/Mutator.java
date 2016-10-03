@@ -1,9 +1,13 @@
 package aiutils;
+
 import java.util.Arrays;
 import java.util.Random;
 
-
-class Mutator{
+/**
+ * kelas untuk mencari solusi dengan algoritma genetik
+ * @author CXXXV
+ */
+public class Mutator{
   private TimeTable prime;
   private TimeTable[] candidate; 
   private int population; 
@@ -256,7 +260,7 @@ class Mutator{
   /**
    * Melakukan mutasi, yakni mengganti nilai anggota populasi secara acak jika
    * memenangkan lotere
-   * @param kebugaran seluruh anggota populasi 
+   * @param fitness kebugaran seluruh anggota populasi 
    */
   public void geneticMutate(int[] fitness){
     Random rnd = new Random(rand);
