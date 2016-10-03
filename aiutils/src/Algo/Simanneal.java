@@ -151,6 +151,10 @@ public class Simanneal {
         printPopulation(tt);
     }
     
+    /**
+     * print timetable
+     * @param t timetable yang akan di print
+     */
     public void printPopulation(TimeTable t){
         TimeTable.Simplified ta = t.getSimplified();
         TimeTable.Simplified ts = ta.stripDown();
