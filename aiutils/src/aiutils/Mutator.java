@@ -8,39 +8,73 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- *
- * @author CXXXV
+ * Kelas untuk mendapatkan solusi dengan menggunakan algoritma genetik.
+ * @author CXXXV.
  */
 class Mutator{
-  private TimeTable prime; //yang solusi teroptimal
-  private TimeTable[] candidate; //timetable yang masih diprose
-  private int population; //banyaknya table yang di-generate
-  private int mutationComplexity; //banyak yang dimutasikan
-  private int mutationRate; //kemungkinan terjadi mutasi {0-100}
-  private int maxFitness; //fitness paling optimal
-  private int maxGeneration; //berapa banyak loop genetic algorithm dilakukan
-  //private int[] variation; //constraint yang perlu dimasukkan
-  //private int variation_length;
+  /**
+   * tempat menyimpan solusi teroptimal
+   */
+  private TimeTable prime;
+  /**
+   * //timetable yang masih diproses
+   */
+  private TimeTable[] candidate; 
+  /**
+   * banyaknya table yang di-generate
+   */
+  private int population; 
+  /**
+   * kemungkinan terjadi mutasi {0-100}
+   */
+  private int mutationRate; 
+  /**
+   * fitness paling optimal
+   */
+  private int maxFitness; 
+  /**
+   * berapa banyak loop genetic algorithm dilakukan
+   */
+  private int maxGeneration; 
+  /**
+   * konflik yang dimiliki solusi paling optimal
+   */
+  private int primeConflict;
+  /**
+   * generasi yang dimiliki solusi paling optimal
+   */
+  private int primeGeneration;
+  /**
+   * seed random
+   */
   int rand;
   
-  //population, mutationRate, maxGeneration
+  /**
+   * Construktor
+   * @param p populasi yang akan digunakan
+   * @param m kemungkinan mutasi(dalam persen) yang mungkin
+   * @param g banyak generasi akan berlangsung
+   */
   public Mutator(int p, int m, int g){
     population = p;
     mutationRate = m;
     maxGeneration = g;
-    mutationComplexity = 1;
     //variation = target;
     //variation_length = variation.length;
     maxFitness = 0;
     rand = (int) System.currentTimeMillis();
     
+    TimeTable t = new TimeTable();
+    
     generateCandidates();
     System.out.println("-----initial--------------------------");
     //printPopulation();
   }
-//==============================================================================
-//program-utama, panggil untuk cari solusi
-//==============================================================================
+/**
+ *==============================================================================
+ *program-utama, panggil untuk cari solusi
+ *==============================================================================
+*/
   public void generatePrime(){
     int[] fitness = new int[population];
     
@@ -58,19 +92,28 @@ class Mutator{
       geneticMutate(fitness);
       
       //check prime found of not
+      primeGeneration = i;
       if(fitnessCheck(fitness) == maxFitness) break;
       //break;
       //printPopulation();
     }
     
     prime = candidate[bestFitness(fitness)];
+    primeConflict = fitness[bestFitness(fitness)];
     printPopulation(prime);
   }
 //==============================================================================
+  /**
+   * mengeset populasi
+   * @param pd populasi baru
+   */
   public void setPopulation(int pd){
     population = pd;
   }
 //==============================================================================  
+  /**
+   * inisialisasi anggota populasi
+   */
   public void generateCandidates(){
     candidate = new TimeTable[population];
     for(int i=0; i<population; i++)
@@ -80,18 +123,27 @@ class Mutator{
     
   }
 //==============================================================================  
+  /**
+   * mengeset kemungkinan mutasi
+   * @param m nilai kemungkinan mutasi baru
+   */
   public void setMutationRate(int m){
     mutationRate = m;
   }
 //============================================================================== 
-  public void setMutationComplexity(int m){
-    mutationComplexity = m;
-  }
-//============================================================================== 
+  /**
+   * mengeset anggota populasi
+   * @param n himpunan anggota populasi 
+   */
   public void setCandidates(TimeTable[] n){
     candidate = n;
   }
 //==============================================================================
+  /**
+   * menguji kebugaran anggota populasi
+   * @param n anggota populasi yang akan diuji
+   * @return nilai kebugaran anggota populasi
+   */
   public int fitnessFunction(TimeTable n){
     int point = 0;
     point = n.CountTotalConflict();
@@ -99,6 +151,11 @@ class Mutator{
     return point;
   }
 //============================================================================== 
+  /**
+   * mengecek apakah sudah ada kebugaran optimal
+   * @param fitness kebugaran seluruh anggota populasi
+   * @return index anggota populasi dengan kebugaran optimal
+   */
   public int fitnessCheck(int[] fitness){
     for(int i=0; i<population; i++){
       if(fitness[i] == maxFitness) return i; 
@@ -107,6 +164,11 @@ class Mutator{
     return -99;
   }
 //==============================================================================
+  /**
+   * mencari anggota dengan kebugaran paling baik
+   * @param fitness kebugaran seluruh anggota populasi
+   * @return index anggota dengan kebugaran terbaik
+   */
   public int bestFitness(int[] fitness){
     int max = 99999;
     int maxi = 0;
@@ -121,6 +183,11 @@ class Mutator{
     return maxi;
   }
 //==============================================================================
+  /**
+   * mencari kebugaran populasi rata-rata
+   * @param fitness kebugaran seluruh anggota populasi
+   * @return kebugaran populasi rata-rata
+   */
   public int averageFitness(int[] fitness){
     int sum = 0;
     for(int i=0; i<population; i++){
@@ -132,6 +199,11 @@ class Mutator{
     return result;
   }
 //==============================================================================  
+  /**
+   * melakukan operasi selection, yakni mengeliminasi anggota dengan
+   * kebugaran rendah
+   * @param fitness kebugaran seluruh anggota populasi
+   */
   public void geneticSelect(int[] fitness){
     int failFitness = averageFitness(fitness);
     
@@ -160,6 +232,12 @@ class Mutator{
     }
   }
 //==============================================================================  
+  /**
+   * melakukan operasi kawin, yakni menyampur dua anggota populasi untuk 
+   * menciptakan anggota populasi dengan nilai yang mirip dengan kedua
+   * orang tuanya
+   * @param fitness kebugaran seluruh anggota populasi
+   */
   public void geneticBreed(int[] fitness){
     Random rnd = new Random(rand);
     rand++;
@@ -225,6 +303,11 @@ class Mutator{
     candidate = sucessor;
   }
 //==============================================================================  
+  /**
+   * Melakukan mutasi, yakni mengganti nilai anggota populasi secara acak jika
+   * memenangkan lotere
+   * @param kebugaran seluruh anggota populasi 
+   */
   public void geneticMutate(int[] fitness){
     Random rnd = new Random(rand);
     rand++;
@@ -238,6 +321,10 @@ class Mutator{
     }
   }
 //==============================================================================  
+  /**
+   * menampilkan nilai salah satu anggota populasi
+   * @param t anggota populasi yang ingin ditampilkan
+   */
   public void printPopulation(TimeTable t){
     TimeTable.Simplified ta = t.getSimplified();
     TimeTable.Simplified ts = ta.stripDown();
@@ -253,10 +340,31 @@ class Mutator{
     }
   }
 //==============================================================================  
+  /**
+   * Mengembalikan solusi optimal, perlu dilakukan generatePrime terlebih dahulu
+   * @return solusi optimal
+   */
   public TimeTable getPrime(){
     return prime;
   }
 //==============================================================================  
+  /**
+   * mengembalikan konflik yang ada pada solusi optimal.
+   * Perlu melakukan generatePrime terlebih dahulu.
+   * @return konflik dari solusi optimal
+   */
+  public int getPrimeConflict(){
+    return primeConflict;
+  }
+//==============================================================================  
+  /**
+   * mengembalikan generasi yang ada pada solusi optimal.
+   * Perlu melakukan generatePrime terlebih dahulu.
+   * @return generasi dari solusi optimal
+   */
+  public int getPrimeGeneration(){
+    return primeGeneration;
+  }
   
   public static void main(String[] args){
     System.out.println("hello world");
