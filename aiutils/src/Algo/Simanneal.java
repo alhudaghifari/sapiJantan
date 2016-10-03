@@ -19,23 +19,25 @@ public class Simanneal {
         P = p;
     }
     
-    void Sim()
+    TimeTable Sim()
     {
         boolean finded = false;
         int i=0;
         double prob;
+        int l = tt.getSimplified().getSize();
         //generate neighborn
-        TimeTable tx[] = new TimeTable[tt.getSimplified().getSize()];
+        TimeTable tx[] = new TimeTable[l];
+        TimeTable xx = tt.getCopy();
         tx = tt.generateNeighboringTimeTable();
         
         //cari konflik yang lebih baik kalo ketemu 1 langsung TT berubah
-        while(i<100 && !finded)
+        while(i<l && !finded)
         {
             //saat konflik lebih baik langsung pindah
-            if(tt.CountTotalConflict()>=tx[i].CountTotalConflict())
+            if(xx.CountTotalConflict()>=tx[i].CountTotalConflict())
             {
                 //relace TT
-                tt = tx[i].getCopy();
+                xx = tx[i].getCopy();
                 T--;
                 finded = true;
             }
@@ -43,12 +45,12 @@ public class Simanneal {
             else
             {
                 //ukur probabilitas
-                prob = Math.exp(-1*((tt.CountTotalConflict() - tx[i].CountTotalConflict())/T));
+                prob = Math.exp(-1*((xx.CountTotalConflict() - tx[i].CountTotalConflict())/T));
                 T--;
                 if(prob>=P)
                 {
                     //relace TT
-                    tt = tx[i].getCopy();
+                    xx = tx[i].getCopy();
                     finded = true;
                 }
                 else
@@ -57,38 +59,46 @@ public class Simanneal {
                 }
             }
         }
+        return xx;
     }
     
-    void greed()
+    TimeTable greed()
     {
         boolean finded = false;
         int index;
         TimeTable tx[] = new TimeTable[tt.getSimplified().getSize()];
         tx = tt.generateNeighboringTimeTable();
+        TimeTable xx = tt.getCopy();
         int r[] = new int[tx.length];
         
+        //pindah nilai conflict ke array
         for(int i=0;i<tx.length;i++)
         {
             r[i] = tx[i].CountTotalConflict();
         }
-        index = maxarrin(r);
+        //cari index punya nilai min
+        index = maxarrin(xx,r);
+        //kalo index tidak -99
         if(index != -99)
-            tt = tx[index].getCopy();
+            //replace TT
+            xx = tx[index].getCopy();
         else
         {
+            //kalo tidak ada maka random walk
             Random ww = new Random();
-            int rand = ww.nextInt(100);
-            tt = tx[rand].getCopy();
+            int rand = ww.nextInt(tx.length);
+            //replace TT
+            xx = tx[rand].getCopy();
         }
-            
+        
+        return xx;
     }
     
-    int maxarrin(int[] r)
+    int maxarrin(TimeTable xx, int[] r)
     {
-        int hasil=0;
+        int hasil = xx.CountTotalConflict();
         int i = 0;
         int thatsit = -99;
-        int count = 0;
         
         while(i<r.length)
         {
@@ -96,7 +106,6 @@ public class Simanneal {
             {
                 hasil = r[i];
                 thatsit = i;
-                count++;
             }
             else
                 i++;
