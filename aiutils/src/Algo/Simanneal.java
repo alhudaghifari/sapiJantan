@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Algo;
 
 import aiutils.GlobalUtils;
@@ -14,12 +9,20 @@ public class Simanneal {
     double P = 0;
     int T = 1000;
     
+    /**
+     * membuat timetable baru dengan inputan timetable dan probabilitas
+     * @param t inputan timetable
+     * @param p inputan probabilitas
+     */
     Simanneal(TimeTable t, double p)
     {
         tt = t;
         P = p;
     }
     
+    /**
+     * methode dengan algoritma simulated annealing
+     */
     void Sim()
     {
         boolean finded = false;
@@ -61,6 +64,9 @@ public class Simanneal {
         }
     }
     
+    /**
+     * methode dengan algoritma hillclimbing with random walk
+     */
     void greed()
     {
         boolean finded = false;
@@ -85,6 +91,11 @@ public class Simanneal {
             
     }
     
+    /**
+     * mencari index dari array yang nilainya terkecil
+     * @param r array yang dicari nilai min
+     * @return index  yang min
+     */
     int maxarrin(int[] r)
     {
         int hasil=0;
@@ -106,6 +117,9 @@ public class Simanneal {
         return thatsit;
     }
     
+    /**
+     * methode untuk run dengan algoritma simulated annealing
+     */
     void runSim()
     {
         int i=0;
@@ -122,6 +136,10 @@ public class Simanneal {
         printPopulation(tt);
     }
     
+    
+    /**
+     * methode untuk run dengan algoritma hillclimbing with random walk
+     */
     void runHill()
     {
         int i=0;
