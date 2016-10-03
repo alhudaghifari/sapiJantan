@@ -1,56 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package aiutils;
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * Kelas untuk mendapatkan solusi dengan menggunakan algoritma genetik.
- * @author CXXXV.
- */
+
 class Mutator{
-  /**
-   * tempat menyimpan solusi teroptimal
-   */
   private TimeTable prime;
-  /**
-   * //timetable yang masih diproses
-   */
   private TimeTable[] candidate; 
-  /**
-   * banyaknya table yang di-generate
-   */
   private int population; 
-  /**
-   * kemungkinan terjadi mutasi {0-100}
-   */
   private int mutationRate; 
-  /**
-   * fitness paling optimal
-   */
   private int maxFitness; 
-  /**
-   * berapa banyak loop genetic algorithm dilakukan
-   */
   private int maxGeneration; 
-  /**
-   * konflik yang dimiliki solusi paling optimal
-   */
   private int primeConflict;
-  /**
-   * generasi yang dimiliki solusi paling optimal
-   */
   private int primeGeneration;
-  /**
-   * seed random
-   */
-  int rand;
+  private int rand;
   
   /**
-   * Construktor
+   * Construktor.
    * @param p populasi yang akan digunakan
    * @param m kemungkinan mutasi(dalam persen) yang mungkin
    * @param g banyak generasi akan berlangsung
@@ -64,17 +29,13 @@ class Mutator{
     maxFitness = 0;
     rand = (int) System.currentTimeMillis();
     
-    TimeTable t = new TimeTable();
-    
     generateCandidates();
     System.out.println("-----initial--------------------------");
     //printPopulation();
   }
-/**
- *==============================================================================
- *program-utama, panggil untuk cari solusi
- *==============================================================================
-*/
+  /**
+   * program-utama, panggil untuk cari solusi.
+   */
   public void generatePrime(){
     int[] fitness = new int[population];
     
@@ -102,15 +63,13 @@ class Mutator{
     primeConflict = fitness[bestFitness(fitness)];
     printPopulation(prime);
   }
-//==============================================================================
   /**
    * mengeset populasi
    * @param pd populasi baru
    */
   public void setPopulation(int pd){
     population = pd;
-  }
-//==============================================================================  
+  } 
   /**
    * inisialisasi anggota populasi
    */
@@ -122,7 +81,6 @@ class Mutator{
     }
     
   }
-//==============================================================================  
   /**
    * mengeset kemungkinan mutasi
    * @param m nilai kemungkinan mutasi baru
@@ -130,7 +88,6 @@ class Mutator{
   public void setMutationRate(int m){
     mutationRate = m;
   }
-//============================================================================== 
   /**
    * mengeset anggota populasi
    * @param n himpunan anggota populasi 
@@ -138,7 +95,6 @@ class Mutator{
   public void setCandidates(TimeTable[] n){
     candidate = n;
   }
-//==============================================================================
   /**
    * menguji kebugaran anggota populasi
    * @param n anggota populasi yang akan diuji
@@ -150,7 +106,6 @@ class Mutator{
     
     return point;
   }
-//============================================================================== 
   /**
    * mengecek apakah sudah ada kebugaran optimal
    * @param fitness kebugaran seluruh anggota populasi
@@ -163,7 +118,6 @@ class Mutator{
     
     return -99;
   }
-//==============================================================================
   /**
    * mencari anggota dengan kebugaran paling baik
    * @param fitness kebugaran seluruh anggota populasi
@@ -182,7 +136,6 @@ class Mutator{
     
     return maxi;
   }
-//==============================================================================
   /**
    * mencari kebugaran populasi rata-rata
    * @param fitness kebugaran seluruh anggota populasi
@@ -198,7 +151,6 @@ class Mutator{
     //System.out.println("fitness"+(result));
     return result;
   }
-//==============================================================================  
   /**
    * melakukan operasi selection, yakni mengeliminasi anggota dengan
    * kebugaran rendah
@@ -231,7 +183,6 @@ class Mutator{
       }
     }
   }
-//==============================================================================  
   /**
    * melakukan operasi kawin, yakni menyampur dua anggota populasi untuk 
    * menciptakan anggota populasi dengan nilai yang mirip dengan kedua
@@ -302,7 +253,6 @@ class Mutator{
     //replace old candidates
     candidate = sucessor;
   }
-//==============================================================================  
   /**
    * Melakukan mutasi, yakni mengganti nilai anggota populasi secara acak jika
    * memenangkan lotere
@@ -319,8 +269,7 @@ class Mutator{
         candidate[i] = new TimeTable();
       }
     }
-  }
-//==============================================================================  
+  } 
   /**
    * menampilkan nilai salah satu anggota populasi
    * @param t anggota populasi yang ingin ditampilkan
@@ -339,7 +288,6 @@ class Mutator{
         System.out.println("========================================");
     }
   }
-//==============================================================================  
   /**
    * Mengembalikan solusi optimal, perlu dilakukan generatePrime terlebih dahulu
    * @return solusi optimal
@@ -347,7 +295,6 @@ class Mutator{
   public TimeTable getPrime(){
     return prime;
   }
-//==============================================================================  
   /**
    * mengembalikan konflik yang ada pada solusi optimal.
    * Perlu melakukan generatePrime terlebih dahulu.
@@ -355,30 +302,9 @@ class Mutator{
    */
   public int getPrimeConflict(){
     return primeConflict;
-  }
-//==============================================================================  
-  /**
-   * mengembalikan generasi yang ada pada solusi optimal.
-   * Perlu melakukan generatePrime terlebih dahulu.
-   * @return generasi dari solusi optimal
-   */
+  }  
+
   public int getPrimeGeneration(){
     return primeGeneration;
-  }
-  
-  public static void main(String[] args){
-    System.out.println("hello world");
-    GlobalUtils global = new GlobalUtils();
-    GlobalUtils.fileReader f = new GlobalUtils.fileReader();
-    
-    int[] er = new int[20]; 
-    //TimeTable t = new TimeTable();
-    TimeTable t = new TimeTable(0);
-    TimeTable.Simplified ta = t.makeNewTimeTableSimplified(er, er, er, er);
-    //System.out.println(t.getSimplified().getStudyClassPosition(0, true)[0]);
-    
-    Mutator m = new Mutator(50, 1, 1000);
-    m.generatePrime();
-    //m.printPopulation();
   }
 }
