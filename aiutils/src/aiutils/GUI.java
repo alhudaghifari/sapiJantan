@@ -75,17 +75,18 @@ public class GUI extends Application {
                             collision[i][j]=true;
                             temp = roomName[index] + "-" + studyName[index];
                         }else if (hourSlot[index] == j && collision[i][j]) {
-                            temp += "| " + roomName[index] + "-" + studyName[index];
-                            if (jum>2) {
+                            temp += " | " + roomName[index] + "-" + studyName[index];
+                            if (jum>=2) {
                                 temp += "\n";
                                 jum = 0;
                             }
                             jum++;
-                            System.out.println("temp = "+temp);
+                            //System.out.println("temp = "+temp);
                         }
                     }
                 }
                 schedule[i][j].getSel().setText(temp);
+                
             }
         }
     }
@@ -95,7 +96,7 @@ public class GUI extends Application {
     }
     
     public void setTableTexted(){
-        int x = 165;
+        int x = 162;
         int y = 145;
         for(int i=0;i<5;i++){
             for(int j=0;j<12;j++){
@@ -107,7 +108,7 @@ public class GUI extends Application {
                 root.getChildren().add(schedule[i][j].getSel());
                 y+=45;
             }
-            x+=163;
+            x+=160;
             y = 145;
         }
     }
@@ -268,9 +269,9 @@ public class GUI extends Application {
 //                            "Perhatian",JOptionPane.ERROR_MESSAGE);
 //                    } else {
                         setClearTable();
-                        int popup = Integer.valueOf(popu.getText());
-                        int mutat = Integer.valueOf(muta.getText());
-                        int gener = Integer.valueOf(gene.getText());
+                        int popup = Integer.valueOf(populasi.getText());
+                        int mutat = Integer.valueOf(mutation.getText());
+                        int gener = Integer.valueOf(generation.getText());
 
                         Mutator m = new Mutator(popup, mutat, gener);
                         m.generatePrime();
@@ -380,9 +381,10 @@ public class GUI extends Application {
 //                            "Perhatian",JOptionPane.ERROR_MESSAGE);
 //                    } else {
                         setClearTable();
-                        Simanneal simaneal = new Simanneal(tabel, Double.valueOf(sima.getText()));
-                        simaneal.runSim();
-                        tabel = simaneal.tt;
+                        double a = Double.valueOf(simaneal.getText());
+                        Simanneal simaneals = new Simanneal(tabel, a);
+                        simaneals.runSim();
+                        tabel = simaneals.tt;
 
 
                         size = tabel.getSimplified().getSize();
@@ -426,7 +428,7 @@ public class GUI extends Application {
         x = 190;
         y = 145;
         Schedule [][] scheduleTarget = new Schedule[5][12];
-        Schedule [][] scheduleSource = new Schedule[5][12];
+        //Schedule [][] scheduleSource = new Schedule[5][12];
         for (int i=0;i<5;i++) {
             for (int j=0;j<12;j++) {
                 // Target Schedule Table
@@ -437,11 +439,11 @@ public class GUI extends Application {
                 root.getChildren().add(scheduleTarget[i][j].getSel());
                 
                 // Source Schedule Table
-                scheduleSource[i][j] = new Schedule(x, y, "");
-                scheduleSource[i][j].setScaleX(1.3);
-                scheduleSource[i][j].setScaleY(1.3);
-                scheduleSource[i][j].setColor(Color.BLACK);
-                
+//                scheduleSource[i][j] = new Schedule(x, y, "");
+//                scheduleSource[i][j].setScaleX(1.3);
+//                scheduleSource[i][j].setScaleY(1.3);
+//                scheduleSource[i][j].setColor(Color.BLACK);
+//                
                 y+=45;
             }
             x+=163;
@@ -561,6 +563,914 @@ public class GUI extends Application {
         });
 
         
+        //***************** Customize slot SOURCE in Schedule Table  **************//
+        //=============================== [0][y] ===================================//
+        //=============================== [0][y] ===================================//
+        //=============================== [0][y] ===================================//
+        schedule[0][0].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][0].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][0].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][1].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][1].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][1].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][2].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][2].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][2].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][3].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][3].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][3].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][4].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][4].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][4].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][5].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][5].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][5].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][6].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][6].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][6].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][7].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][7].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][7].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][8].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][8].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][8].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][9].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][9].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][9].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][10].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][10].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][10].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][11].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[0][11].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[0][11].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        //*************************************************************************//
+        schedule[1][0].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][0].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][0].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][1].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][1].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][1].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][2].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][2].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][2].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][3].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][3].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][3].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][4].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][4].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][4].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][5].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][5].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][5].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][6].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][6].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][6].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][7].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][7].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][7].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][8].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][8].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][8].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][9].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][9].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][9].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][10].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][10].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][10].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][11].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[1][11].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[1][11].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        //*************************************************************************//
+        schedule[2][0].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][0].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][0].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][1].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][1].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][1].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][2].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][2].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][2].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][3].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][3].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][3].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][4].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][4].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][4].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][5].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][5].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][5].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][6].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][6].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][6].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][7].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][7].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][7].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][8].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][8].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][8].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][9].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][9].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][9].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][10].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][10].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][10].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][11].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[2][11].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[2][11].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        //*************************************************************************//
+        schedule[3][0].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][0].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][0].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][1].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][1].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][1].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][2].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][2].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][2].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][3].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][3].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][3].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][4].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][4].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][4].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][5].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][5].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][5].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][6].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][6].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][6].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][7].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][7].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][7].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][8].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][8].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][8].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][9].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][9].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][9].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][10].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][10].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][10].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][11].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][11].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[3][11].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        //*************************************************************************//
+        schedule[4][0].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][0].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][0].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][1].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][1].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][1].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][2].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][2].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][2].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][3].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][3].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][3].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][4].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][4].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][4].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][5].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][5].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][5].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][6].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][6].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][6].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][7].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][7].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][7].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][8].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[3][8].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][8].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][9].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][9].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][9].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][10].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][10].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][10].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][11].getSel().setOnDragDetected(new EventHandler <MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /* allow MOVE transfer mode */
+                Dragboard db = schedule[4][11].getSel().startDragAndDrop(TransferMode.MOVE);
+                
+                /* put a string on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(schedule[4][11].getSel().getText());
+                db.setContent(content);
+                
+                event.consume();
+            }
+        });
+        
+        //=============================== [0][y] ===================================//
+        //=============================== [0][y] ===================================//
+        //=============================== [0][y] ===================================//
+        //******************  End of slot SOURCE in Schedule Table  ****************//
         
         //***************** Customize slot TARGET in Slot Pengubahan  **************//
         //=============================== [0][y] ===================================//
@@ -715,6 +1625,2204 @@ public class GUI extends Application {
         });
 
         
+        //******** Customize Schedule Target in Schedule When Drag Done ***********//
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //*************************************************************************//
+        scheduleTarget[0][0].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][0].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][0].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][0].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[0][1].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][1].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][1].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][1].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[0][2].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][2].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][2].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][2].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[0][3].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][3].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][3].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][3].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[0][4].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][4].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][4].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][4].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[0][5].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][5].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][5].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][5].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[0][6].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][6].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][6].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][6].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[0][7].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][7].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][7].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][7].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[0][8].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][8].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][8].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][8].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[0][9].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][9].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][9].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][9].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[0][10].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][10].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][10].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][10].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[0][11].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[0][11].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[0][11].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[0][11].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        
+        //*************************************************************************//
+        scheduleTarget[1][0].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][0].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][0].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][0].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[1][1].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][1].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][1].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][1].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[1][2].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][2].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][2].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][2].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[1][3].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][3].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][3].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][3].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[1][4].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][4].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][4].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][4].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[1][5].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][5].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][5].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][5].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[1][6].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][6].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][6].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][6].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[1][7].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][7].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][7].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][7].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[1][8].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][8].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][8].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][8].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[1][9].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][9].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][9].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][9].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[1][10].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][10].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][10].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][10].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[1][11].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[1][11].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[1][11].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[1][11].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        
+        //*************************************************************************//
+        scheduleTarget[2][0].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][0].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][0].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][0].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[2][1].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][1].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][1].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][1].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[2][2].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][2].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][2].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][2].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[2][3].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][3].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][3].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][3].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[2][4].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][4].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][4].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][4].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[2][5].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][5].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][5].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][5].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[2][6].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][6].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][6].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][6].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[2][7].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][7].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][7].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][7].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[2][8].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][8].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][8].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][8].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[2][9].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][9].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][9].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][9].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[2][10].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][10].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][10].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][10].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[2][11].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[2][11].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[2][11].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[2][11].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][0].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][0].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][0].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][0].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][1].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][1].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][1].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][1].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][2].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][2].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][2].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][2].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][3].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][3].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][3].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][3].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][4].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][4].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][4].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][4].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][5].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][5].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][5].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][5].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][6].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][6].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][6].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][6].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][7].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][7].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][7].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][7].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[3][8].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][8].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][8].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][8].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[3][9].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][9].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][9].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][9].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[3][10].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][10].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][10].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][10].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[3][11].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[3][11].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[3][11].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[3][11].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[4][0].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][0].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][0].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][0].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[4][1].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][1].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][1].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][1].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[4][2].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][2].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][2].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][2].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[4][3].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][3].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][3].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][3].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[4][4].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][4].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][4].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][4].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[4][5].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][5].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][5].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][5].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[4][6].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][6].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][6].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][6].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //*************************************************************************//
+        scheduleTarget[4][7].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][7].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][7].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][7].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[4][8].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][8].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][8].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][8].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[4][9].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][9].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][9].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][9].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[4][10].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][10].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        
+        
+        scheduleTarget[4][10].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][10].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        
+        //*************************************************************************//
+        scheduleTarget[4][11].getSel().setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* accept it only if it is  not dragged from the same node 
+                 * and if it has a string data */
+                if (event.getGestureSource() != scheduleTarget[4][11].getSel() &&
+                        event.getDragboard().hasString()) {
+                    /* allow for moving */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                
+                event.consume();
+            }
+        });
+        
+        scheduleTarget[4][11].getSel().setOnDragDropped(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                
+                if (db.hasString()) {
+//                    slotTarget[0][1].getSel().setText("");
+                    schedule[4][11].getSel().setText(db.getString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+                
+                event.consume();
+            }
+        });
+        
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //******** Customize Schedule Target in Schedule When Drag Done ***********//
+        
+        
+        
         //******** Customize slot source in Slot Pengubahan When Drag Done ********//
         //============================== [0][y] ===================================//
         //============================== [0][y] ===================================//
@@ -766,6 +3874,701 @@ public class GUI extends Application {
                 event.consume();
             }
         });
+        
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //******** End of slot source in Slot Pengubahan When Drag Done ********//
+        
+        //******** Customize schedule source in Schedule Table When Drag Done ********//
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        
+        schedule[0][0].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][0].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+        schedule[0][1].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][1].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][2].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][2].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][3].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][3].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][4].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][4].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][5].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][5].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][6].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][6].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][7].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][7].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][8].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][8].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][9].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][9].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][10].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][10].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[0][11].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[0][11].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+        schedule[1][1].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][1].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][2].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][2].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][3].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][3].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][4].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][4].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][5].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][5].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][6].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][6].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][7].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][7].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][8].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][8].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][9].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][9].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][10].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][10].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[1][11].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[1][11].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+        schedule[2][1].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][1].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][2].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][2].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][3].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][3].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][4].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][4].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][5].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][5].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][6].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][6].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][7].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][7].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][8].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][8].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][9].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][9].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][10].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][10].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[2][11].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[2][11].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+        schedule[3][1].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][1].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][2].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][2].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][3].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][3].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][4].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][4].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][5].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][5].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][6].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][6].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][7].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][7].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][8].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][8].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][9].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][9].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][10].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][10].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[3][11].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[3][11].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+        schedule[4][1].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][1].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][2].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][2].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][3].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][3].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][4].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][4].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][5].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][5].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][6].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][6].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][7].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][7].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][8].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][8].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][9].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][9].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][10].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][10].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        schedule[4][11].getSel().setOnDragDone(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                /* if the data was successfully moved, clear it */
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    schedule[4][11].getSel().setText("");
+                }
+                
+                event.consume();
+            }
+        });
+        
+        
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //============================== [0][y] ===================================//
+        //******** End of schedule source in Slot Pengubahan When Drag Done ********//
         
         
 //        source.setOnDragDone(new EventHandler <DragEvent>() {
